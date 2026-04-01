@@ -1,0 +1,280 @@
+---
+interface Props {
+    data?: {
+        headline?: string;
+        subline?: string;
+        videoUrl?: string;
+    };
+}
+
+const { data } = Astro.props;
+
+// Fallbacks
+const headline =
+    data?.headline ||
+    'Adbites in 30 Sekunden: <br class="hidden md:block" /> <span class="text-white"> So arbeitet das Adbites LTS System für dich. </span>';
+const subline =
+    data?.subline ||
+    "Alles zu kompliziert? Heiko erklärt dir in 30 Sekunden, wie Adbites funktioniert.";
+// Default Video URL (extracting the ID)
+const videoUrl =
+    data?.videoUrl || "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+
+// Extract YouTube ID for embed
+function getYoutubeId(url: string) {
+    const regExp =
+        /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return match && match[2].length === 11 ? match[2] : null;
+}
+const youtubeId = getYoutubeId(videoUrl);
+const embedUrl = youtubeId
+    ? `https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0&modestbranding=1&controls=0&showinfo=0&iv_load_policy=3&origin=${Astro.url.origin}`
+    : "";
+---
+
+<section class="py-24 bg-[#0d0101] relative overflow-visible z-10">
+    <!-- Subtle Background Glow (Left - Existing) -->
+    <div
+        class="absolute inset-0
+bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))]
+from-brand-primary/5 via-[#0d0101] to-[#0d0101] pointer-events-none"
+    >
+    </div>
+    <!-- Right Orange Glow (New) -->
+    <div
+        class="absolute top-1/2 right-[-200px]
+-translate-y-1/2 w-[800px] h-[800px] bg-orange-500/15 blur-[120px] rounded-full
+pointer-events-none -z-10"
+    >
+    </div>
+    <div
+        class="max-w-7xl mx-auto px-4 sm:px-6
+lg:px-8 relative z-10 text-center"
+    >
+        <div class="mb-12 max-w-3xl mx-auto">
+            <h2
+                class="text-3xl md:text-5xl font-heading font-bold text-white mb-6
+leading-[1.1]"
+                set:html={headline}
+            />
+            <p class="text-slate-400 text-lg">
+                {subline}
+            </p>
+        </div>
+        <!-- Video Facade Container -->
+        <div
+            id="founder-demo-facade"
+            class="relative
+max-w-5xl mx-auto group cursor-pointer"
+            data-embed-url={embedUrl}
+        >
+            <!-- Glow
+Effect behind the video -->
+            <div
+                class="absolute -inset-1 bg-gradient-to-r
+from-brand-primary/20 to-purple-500/20 rounded-2xl blur opacity-25
+group-hover:opacity-50 transition duration-1000 group-hover:duration-200"
+            >
+            </div>
+            <!-- Main Video Container -->
+            <div
+                class="relative bg-slate-900 border
+border-white/10 rounded-2xl overflow-hidden aspect-video shadow-2xl"
+            >
+                <!--
+Iframe Container (Initially Hidden) -->
+                <div
+                    id="founder-demo-iframe-container"
+                    class="absolute inset-0 w-full h-full z-50 rounded-2xl hidden"
+                >
+                </div>
+                <!-- Placeholder Abstract UI Background
+(Simulating Dashboard) - Hidden when playing -->
+                <div
+                    id="founder-demo-dashboard-bg"
+                    class="absolute inset-0
+bg-slate-900 transition-opacity duration-300"
+                >
+                    <!-- Grid
+-->
+                    <div
+                        class="absolute inset-0 opacity-10"
+                        style="background-image:
+radial-gradient(circle at 1px 1px, white 1px, transparent 0); background-size:
+40px 40px;"
+                    >
+                    </div>
+                    <!-- Abstract Dashboard Elements -->
+                    <div
+                        class="absolute
+top-8 left-8 right-8 bottom-8 opacity-20 flex gap-4"
+                    >
+                        <div
+                            class="w-1/4 h-full
+bg-white/5 rounded-lg border border-white/10"
+                        >
+                        </div>
+                        <div class="w-3/4 h-full
+flex flex-col gap-4">
+                            <div
+                                class="h-1/3 bg-white/5 rounded-lg border
+border-white/10 w-full flex items-center justify-center"
+                            >
+                                <!-- Map placeholder
+dots -->
+                                <div class="flex gap-8">
+                                    <div
+                                        class="h-2 w-2 rounded-full bg-red-500
+animate-pulse"
+                                    >
+                                    </div>
+                                    <div
+                                        class="h-2 w-2 rounded-full bg-red-500
+animate-pulse delay-75"
+                                    >
+                                    </div>
+                                    <div
+                                        class="h-2 w-2 rounded-full bg-red-500
+animate-pulse delay-150"
+                                    >
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="h-2/3 bg-white/5
+rounded-lg border border-white/10"
+                            >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Thumbnail
+Overlay / "Founder pointing" placeholder -->
+                <!-- Since we don't have a real
+image, we use a gradient overlay and strict typography -->
+                <div
+                    id="founder-demo-thumbnail-overlay"
+                    class="absolute
+inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent transition-opacity duration-300"
+                >
+                </div>
+                <!-- Play
+Button & Overlay Elements -->
+                <div
+                    id="founder-demo-play-button"
+                    class="absolute inset-0 flex flex-col
+items-center justify-center z-40 transition-opacity duration-300"
+                >
+                    <div
+                        class="relative group-hover:scale-110
+transition-transform duration-300"
+                    >
+                        <div
+                            class="absolute inset-0
+bg-brand-primary blur-xl opacity-20 rounded-full animate-pulse"
+                        >
+                        </div>
+                        <div
+                            class="relative w-24 h-24 bg-white/10 backdrop-blur-md rounded-full border
+border-white/20 flex items-center justify-center pl-1 shadow-lg
+group-hover:bg-white/20 transition-colors"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="currentColor"
+                                class="size-10 text-brand-primary"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M4.5
+5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0
+3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="mt-8 flex
+items-center gap-3">
+                        <span
+                            class="inline-flex items-center px-3 py-1
+rounded-full text-xs font-bold bg-brand-primary text-white shadow-lg"
+                        >
+                            In 2 Minuten erklärt
+                        </span>
+                    </div>
+                </div>
+                <!-- Fake Player Controls (for the
+aesthetic) -->
+                <div
+                    id="founder-demo-fake-controls"
+                    class="absolute bottom-0 left-0 right-0 h-12
+bg-gradient-to-t from-slate-950/80 to-transparent px-6 flex items-center gap-4
+opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-40"
+                >
+                    <div
+                        class="h-1 flex-1 bg-white/20 rounded-full
+overflow-hidden"
+                    >
+                        <div class="h-full w-1/3 bg-brand-primary rounded-full">
+                        </div>
+                    </div>
+                    <div class="text-xs font-mono text-slate-300">02:14</div>
+                </div>
+            </div>
+            <p
+                id="founder-demo-disclaimer"
+                class="mt-6 text-sm text-slate-500 transition-opacity duration-300"
+            >
+                <span class="text-brand-primary">●</span> Video wird datenschutzkonform
+                geladen (Klick erforderlich).
+            </p>
+        </div>
+    </div>
+</section>
+
+<script>
+    const facade = document.getElementById("founder-demo-facade");
+    const iframeContainer = document.getElementById(
+        "founder-demo-iframe-container",
+    );
+    const dashboardBg = document.getElementById("founder-demo-dashboard-bg");
+    const thumbnailOverlay = document.getElementById(
+        "founder-demo-thumbnail-overlay",
+    );
+    const playButton = document.getElementById("founder-demo-play-button");
+    const fakeControls = document.getElementById("founder-demo-fake-controls");
+    const disclaimer = document.getElementById("founder-demo-disclaimer");
+
+    if (facade && iframeContainer) {
+        facade.addEventListener("click", () => {
+            const embedUrl = facade.getAttribute("data-embed-url");
+            if (embedUrl) {
+                // Fade out facade elements
+                if (dashboardBg) dashboardBg.style.opacity = "0";
+                if (thumbnailOverlay) thumbnailOverlay.style.opacity = "0";
+                if (playButton) playButton.style.opacity = "0";
+                if (fakeControls) fakeControls.style.display = "none";
+                if (disclaimer) disclaimer.style.opacity = "0";
+
+                setTimeout(() => {
+                    // Hide completely
+                    if (dashboardBg) dashboardBg.style.display = "none";
+                    if (thumbnailOverlay)
+                        thumbnailOverlay.style.display = "none";
+                    if (playButton) playButton.style.display = "none";
+                    if (disclaimer) disclaimer.style.display = "none";
+
+                    // Show and inject iframe
+                    iframeContainer.classList.remove("hidden");
+                    iframeContainer.innerHTML = `<iframe class="w-full h-full rounded-2xl" src="${embedUrl}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+
+                    // Remove pointer events so iframe can be interacted with directly
+                    facade.classList.remove("cursor-pointer");
+                    facade.replaceWith(facade.cloneNode(true)); // remove event listeners
+                }, 300);
+            }
+        });
+    }
+</script>

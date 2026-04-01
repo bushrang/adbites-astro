@@ -1,0 +1,33 @@
+---
+import SocialFanOut from "./SocialFanOut.jsx";
+
+interface Props {
+    data?: {
+        designType?: string;
+         সামাজিকFanOutData?: any; // To be mapped nicely from GROQ
+        socialFanOutData?: any;
+    };
+}
+
+const { data } = Astro.props;
+
+if (!data || !data.designType) return null;
+---
+
+{data.designType === 'design-1-social-fan-out' && data.socialFanOutData && (
+    <SocialFanOut client:visible data={data.socialFanOutData} />
+)}
+
+{data.designType === 'design-2' && (
+    <div class="py-24 text-center text-slate-400 bg-[#0d0101]">
+        <h2 class="text-3xl font-bold mb-4">VisualSection (Design 2 Placeholder)</h2>
+        <p>This design type has not been implemented yet.</p>
+    </div>
+)}
+
+{data.designType === 'design-3' && (
+    <div class="py-24 text-center text-slate-400 bg-[#0d0101]">
+        <h2 class="text-3xl font-bold mb-4">VisualSection (Design 3 Placeholder)</h2>
+        <p>This design type has not been implemented yet.</p>
+    </div>
+)}

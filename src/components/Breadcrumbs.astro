@@ -1,0 +1,84 @@
+---
+export interface BreadcrumbItem {
+    label: string;
+    href?: string; // Optional: last item usually isn't a link
+}
+
+export interface Props {
+    items: BreadcrumbItem[];
+}
+
+const { items } = Astro.props;
+
+// Generate JSON-LD BreadcrumbList Schema
+const schema = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => {
+        const isLast = index === items.length - 1;
+        return {
+            "@type": "ListItem",
+            position: index + 1,
+            name: item.label,
+            // Only add item URL if href is provided (usually the last item has no href in our usage, but we fallback to Astro.url.href if it's the current page)
+            item: item.href
+                ? new URL(item.href, Astro.site || Astro.url.origin).href
+                : isLast
+                  ? Astro.url.href
+                  : undefined,
+        };
+    }),
+});
+---
+
+<nav
+    aria-label="Breadcrumb"
+    class="flex items-center space-x-2 text-sm text-zinc-500 mb-8 mt-4 overflow-x-auto whitespace-nowrap pb-2 scrollbar-none"
+>
+    {
+        items.map((item, index) => {
+            const isLast = index === items.length - 1;
+
+            return (
+                <div class="flex items-center">
+                    {isLast ? (
+                        <span
+                            class="text-zinc-300 font-medium truncate max-w-[200px] sm:max-w-[400px]"
+                            aria-current="page"
+                        >
+                            {item.label}
+                        </span>
+                    ) : (
+                        <a
+                            href={item.href}
+                            class="hover:text-brand-primary transition-colors focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2 focus:ring-offset-zinc-950 rounded-sm"
+                        >
+                            {item.label}
+                        </a>
+                    )}
+
+                    {/* Separator icon chevron */}
+                    {!isLast && (
+                        <svg
+                            class="w-4 h-4 mx-2 text-zinc-600 flex-shrink-0"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            aria-hidden="true"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M9 5l7 7-7 7"
+                            />
+                        </svg>
+                    )}
+                </div>
+            );
+        })
+    }
+</nav>
+
+<!-- Inject SEO JSON-LD Schema into the <head> -->
+<script slot="head" type="application/ld+json" set:html={schema} />

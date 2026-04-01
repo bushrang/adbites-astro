@@ -1,0 +1,102 @@
+---
+const { class: className } = Astro.props;
+
+const ads = [
+    {
+        src: "/assets/meta-ads-mockups/retail.png",
+        alt: "Fashion Retail Ad",
+        caption: "Seasonal Campaigns",
+    },
+    {
+        src: "/assets/meta-ads-mockups/discount.png",
+        alt: "Discount Offer Ad",
+        caption: "High-Performance Offers",
+    },
+    {
+        src: "/assets/meta-ads-mockups/lifestyle.png",
+        alt: "Lifestyle Ad",
+        caption: "Brand Building",
+    },
+    {
+        src: "/assets/meta-ads-mockups/store.png",
+        alt: "Store Interior Ad",
+        caption: "Store Traffic Ads",
+    },
+    {
+        src: "/assets/meta-ads-mockups/social.png",
+        alt: "UGC Ad",
+        caption: "Social Proof / UGC",
+    },
+];
+---
+
+<section class:list={["py-20 overflow-hidden", className]}>
+    <div class="max-w-7xl mx-auto px-6 mb-12 text-center">
+        <h2 class="text-3xl md:text-5xl font-bold mb-6">
+            High-Performance Creatives
+        </h2>
+        <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+            Wir gestalten Ads, die auffallen und konvertieren. Von klassischen
+            Image-Ads bis hin zu authentischem UGC.
+        </p>
+    </div>
+
+    <div class="relative w-full">
+        {/* Gradient Masks */}
+        <div
+            class="absolute left-0 top-0 bottom-0 w-12 md:w-32 z-10 bg-gradient-to-r from-brand-dark to-transparent pointer-events-none"
+        >
+        </div>
+        <div
+            class="absolute right-0 top-0 bottom-0 w-12 md:w-32 z-10 bg-gradient-to-l from-brand-dark to-transparent pointer-events-none"
+        >
+        </div>
+
+        {/* Scrolling Container */}
+        <div
+            class="flex gap-8 overflow-x-auto pb-12 px-6 md:px-0 snap-x snap-mandatory scrollbar-hide -mx-6 md:mx-0 md:justify-center"
+        >
+            {
+                ads.map((ad, index) => (
+                    <div class="snap-center shrink-0 first:pl-6 md:first:pl-0 last:pr-6 md:last:pr-0">
+                        <div class="group relative w-[280px] h-[580px] bg-gray-900 rounded-[3rem] border-8 border-gray-800 shadow-2xl overflow-hidden transform transition-all duration-500 hover:-translate-y-4 hover:shadow-[0_20px_50px_-12px_rgba(255,88,0,0.3)]">
+                            {/* Phone Notch */}
+                            <div class="absolute top-0 left-1/2 -translate-x-1/2 h-6 w-32 bg-black rounded-b-2xl z-20" />
+
+                            {/* Screen Content */}
+                            <div class="w-full h-full relative">
+                                <img
+                                    src={ad.src}
+                                    alt={ad.alt}
+                                    class="w-full h-full object-cover"
+                                />
+
+                                {/* Overlay on Hover */}
+                                <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-6 text-center">
+                                    <div>
+                                        <p class="text-brand-primary font-bold text-lg mb-2">
+                                            {ad.caption}
+                                        </p>
+                                        <span class="inline-block px-4 py-2 border border-white/30 rounded-full text-sm backdrop-blur-sm">
+                                            View Details
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</section>
+
+<style>
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+</style>

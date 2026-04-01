@@ -1,0 +1,57 @@
+---
+import FaqAccordion from "./FaqAccordion.jsx";
+---
+
+<section
+    id="faq"
+    class="py-24 bg-[#0d0101] border-t border-white/5 relative overflow-hidden"
+>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
+            <!-- Left Column: Sticky Headline -->
+            <div class="lg:sticky lg:top-32 h-fit">
+                <h2
+                    class="text-4xl md:text-6xl font-heading font-bold text-white mb-8 leading-tight"
+                >
+                    Fragen? <br />
+                    <span class="text-white"> Lassen Sie uns das klären. </span>
+                </h2>
+                <p class="text-lg text-slate-400 max-w-md leading-relaxed mb-8">
+                    Wir verstehen: Marketing, Ad-Tech, Daten-Analyse... viele
+                    Buzzwords können verwirrend sein.
+                </p>
+                <p class="text-lg text-slate-400 max-w-md leading-relaxed">
+                    Wir sind hier, um Klarheit zu schaffen. Schauen Sie durch
+                    unsere FAQs. Sollte Ihre Frage fehlen, ist unser Team immer
+                    für Sie da.
+                </p>
+
+                <div class="mt-12 hidden lg:block">
+                    <!-- Decorative Arrow or visual element could go here -->
+                    <div
+                        class="w-24 h-24 rounded-full border border-white/10 flex items-center justify-center"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="size-8 text-slate-500"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="m19.5 8.25-7.5 7.5-7.5-7.5"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Accordion -->
+            <div class="w-full">
+                <FaqAccordion client:visible />
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,54 @@
+---
+interface FAQ {
+    question: string;
+    answer: string;
+}
+
+interface Props {
+    headline?: string;
+    faqs: FAQ[];
+}
+
+const { headline = "Häufige Fragen", faqs } = Astro.props;
+---
+
+<section class="py-24 bg-[#111] px-4 border-t border-white/5 relative z-10">
+    <div class="max-w-3xl mx-auto">
+        <div class="text-center mb-16">
+            <h2
+                class="text-3xl md:text-5xl font-heading font-bold text-white mb-6"
+            >
+                {headline}
+            </h2>
+        </div>
+
+        <div class="space-y-4">
+            {
+                faqs.map((faq) => (
+                    <details class="group bg-white/5 border border-white/10 rounded-2xl overflow-hidden [&_summary::-webkit-details-marker]:hidden transition-all duration-300">
+                        <summary class="flex items-center justify-between gap-4 p-6 cursor-pointer font-bold text-white text-lg select-none hover:text-brand-primary transition-colors">
+                            {faq.question}
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="2"
+                                stroke="currentColor"
+                                class="w-6 h-6 shrink-0 transition-transform duration-300 group-open:-rotate-180 text-brand-primary"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                                />
+                            </svg>
+                        </summary>
+                        <div class="px-6 pb-6 text-slate-400 leading-relaxed">
+                            {faq.answer}
+                        </div>
+                    </details>
+                ))
+            }
+        </div>
+    </div>
+</section>

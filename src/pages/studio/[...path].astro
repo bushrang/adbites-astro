@@ -1,0 +1,25 @@
+---
+import Studio from "../../components/Studio";
+export const prerender = false;
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Adbites Studio</title>
+        <style>
+            html,
+            body {
+                height: 100%;
+                margin: 0;
+                padding: 0;
+                overflow: hidden; /* Prevent double scrollbars */
+            }
+        </style>
+    </head>
+    <body>
+        <Studio client:only="react" />
+    </body>
+</html>

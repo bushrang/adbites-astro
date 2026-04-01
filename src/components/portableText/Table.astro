@@ -1,0 +1,55 @@
+---
+const { node } = Astro.props;
+const { rows } = node;
+
+if (!rows || rows.length === 0) {
+    return null;
+}
+
+const headerRow = rows[0];
+const bodyRows = rows.slice(1);
+---
+
+<div
+    class="my-10 w-full overflow-hidden rounded-2xl border border-zinc-800 shadow-xl bg-zinc-900/40 backdrop-blur-sm"
+>
+    <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm text-zinc-400 border-collapse">
+            <thead
+                class="text-xs uppercase bg-zinc-800/80 text-zinc-200 border-b border-zinc-700"
+            >
+                <tr>
+                    {
+                        headerRow.cells.map((cell: string) => (
+                            <th
+                                scope="col"
+                                class="px-6 py-4 font-bold tracking-wider"
+                            >
+                                {cell}
+                            </th>
+                        ))
+                    }
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-zinc-800">
+                {
+                    bodyRows.map((row: any, rowIndex: number) => (
+                        <tr
+                            class={`transition-colors hover:bg-zinc-800/40 ${rowIndex % 2 === 0 ? "bg-transparent" : "bg-black/20"}`}
+                        >
+                            {row.cells.map(
+                                (cell: string, cellIndex: number) => (
+                                    <td
+                                        class={`px-6 py-4 whitespace-nowrap ${cellIndex === 0 ? "font-medium text-white" : ""}`}
+                                    >
+                                        {cell}
+                                    </td>
+                                ),
+                            )}
+                        </tr>
+                    ))
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

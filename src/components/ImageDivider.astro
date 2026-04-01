@@ -1,0 +1,24 @@
+---
+const imagePath = "/assets/images/lokales-marketing.avif";
+---
+
+<section class="w-full relative h-[60vh] min-h-[400px] overflow-hidden">
+    <!-- Image -->
+    <img
+        src={imagePath}
+        alt="Lokales Marketing im stationären Einzelhandel"
+        class="absolute inset-0 w-full h-full object-cover object-center"
+    />
+
+    <!-- Overlay: Fade to Dark -->
+    <div
+        class="absolute inset-0 bg-gradient-to-b from-transparent via-brand-dark/20 to-brand-dark"
+    >
+    </div>
+
+    <!-- Top Overlay for smoother transition from previous section (optional but nice) -->
+    <div
+        class="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-brand-dark to-transparent opacity-80"
+    >
+    </div>
+</section>

@@ -1,0 +1,130 @@
+---
+const pricingPlans = [
+  {
+    name: "STARTER",
+    description: "Sichtbarkeit. Für Händler, die lokal digital stattfinden wollen.",
+    price: "490 €",
+    period: "/mo",
+    cta: "Mit Starter beginnen",
+    features: [
+      "ARIA-Umfeldanalyse (Basis)",
+      "Google Maps Pflege",
+      "1x Social Post / Woche"
+    ],
+    highlight: false
+  },
+  {
+    name: "GROWTH",
+    description: "Umsatz-Kraftwerk. Messbare Frequenzsteigerung im Laden.",
+    price: "1.390 €",
+    period: "/mo",
+    cta: "Growth wählen",
+    badge: "EMPFOHLEN",
+    features: [
+      "Alles aus STARTER",
+      "Deep-Targeting Ads (Daten-Pool)",
+      "Landingpage",
+      "Website-Chatbot",
+      "3x Posts / Woche"
+    ],
+    highlight: true
+  },
+  {
+    name: "ENTERPRISE",
+    description: "Marktführer. Für Filialisten & Marktdominanz.",
+    price: "2.690 €",
+    period: "/mo",
+    cta: "Anfragen",
+    features: [
+      "Alles aus GROWTH",
+      "LeadGen-Module",
+      "Wettbewerbs-Radar",
+      "Loyalty-System",
+      "Multi-Standort-Analyse"
+    ],
+    highlight: false
+  }
+];
+---
+
+<section id="pricing" class="py-16 bg-[#0d0101] relative overflow-hidden">
+  <!-- Background Elements (Subtle) -->
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-7xl pointer-events-none">
+      <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-primary/5 rounded-full blur-[128px]"></div>
+      <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-600/5 rounded-full blur-[128px]"></div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-6 relative z-10">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl md:text-5xl font-bold font-heading text-white mb-6 tracking-tight leading-[1.1]">
+        Transparente Preise
+      </h2>
+      <p class="text-lg text-slate-400 max-w-2xl mx-auto">
+        Keine versteckten Kosten. Nur skalierbares Wachstum.
+      </p>
+    </div>
+
+    <!-- Compact Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {pricingPlans.map((plan) => (
+        <div class={`relative rounded-xl p-6 border transition-all duration-500 group flex flex-col
+            ${plan.highlight 
+              ? 'bg-white/[0.03] border-brand-primary/60 shadow-[0_0_50px_-12px_rgba(255,88,0,0.3)] z-10 scale-[1.02]' 
+              : 'bg-white/[0.02] border-white/10 hover:border-brand-primary/40 hover:bg-white/[0.04] hover:shadow-[0_0_30px_-10px_rgba(255,88,0,0.15)]'
+            }
+        `}>
+          <!-- Gradient Border Effect (Pseudo-element approach for smoother gradients) -->
+          {plan.highlight && <div class="absolute inset-0 rounded-xl bg-gradient-to-b from-brand-primary/10 to-transparent pointer-events-none -z-10 blur-xl transition-all duration-500"></div>}
+
+          {plan.badge && (
+            <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-brand-primary to-orange-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-lg">
+              {plan.badge}
+            </div>
+          )}
+
+          <div class="mb-4">
+            <h3 class="text-white font-bold text-base mb-1">{plan.name}</h3>
+            <p class="text-slate-400 text-xs h-8 leading-relaxed">{plan.description}</p>
+          </div>
+
+          <div class="mb-6">
+            <div class="flex items-baseline gap-1">
+              <span class="text-3xl font-bold text-white tracking-tight">{plan.price}</span>
+              <span class="text-slate-500 text-sm">{plan.period}</span>
+            </div>
+          </div>
+
+          <a href="#contact" class={`block w-full py-3 rounded-lg text-center font-bold text-sm transition-all duration-300 mb-6
+              ${plan.highlight
+                ? 'bg-gradient-to-r from-brand-primary to-orange-600 text-white hover:shadow-lg hover:shadow-brand-primary/20'
+                : 'bg-white/5 text-white hover:bg-white/10'
+              }
+          `}>
+            {plan.cta}
+          </a>
+
+          <ul class="space-y-3 flex-grow">
+            {plan.features.map((feature) => (
+              <li class="flex items-start gap-2.5 text-xs text-slate-300">
+                <div class="mt-0.5 w-4 h-4 rounded-full bg-brand-primary/10 flex items-center justify-center shrink-0">
+                    <svg class="w-2.5 h-2.5 text-brand-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                    </svg>
+                </div>
+                {feature}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+    
+    <div class="mt-12 text-center border-t border-white/5 pt-8">
+        <p class="text-xs text-slate-500">
+            Alle Preise zzgl. MwSt. Monatlich kündbar. <br class="md:hidden" />
+            <span class="text-slate-400 font-bold">Einmaliges Setup: 990 €.</span>
+        </p>
+    </div>
+
+  </div>
+</section>

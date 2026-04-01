@@ -1,0 +1,210 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/Navbar.astro";
+import Logos from "../../components/Logos.astro";
+import Footer from "../../components/Footer.astro"; // assuming there's a footer or it's in layout
+import ProductHero from "../../components/product/ProductHero.astro";
+import ProductProblem from "../../components/product/ProductProblem.astro";
+import ProductMetrics from "../../components/product/ProductMetrics.astro";
+import ProductFeatures from "../../components/product/ProductFeatures.astro";
+import ProductDemo from "../../components/product/ProductDemo.astro";
+import ProductEcosystem from "../../components/product/ProductEcosystem.astro";
+import ProductPricing from "../../components/product/ProductPricing.astro";
+import ProductFAQ from "../../components/product/ProductFAQ.astro";
+import ProductCTA from "../../components/product/ProductCTA.astro";
+
+// --- MOCK DATA (Later moved to Sanity) ---
+
+const heroData = {
+    categoryLabel: "KI Fotoshootings",
+    headline: "Professionelle Produktfotos –<br/>ohne Fotograf, ohne Studio.",
+    subheadline:
+        "Sparen Sie tausende Euro und wochenlange Wartezeiten. Laden Sie einfach ein Handyfoto hoch und erhalten Sie verkaufsstarke Bilder für Webshop und Social Media.",
+    primaryCTA: {
+        text: "Kostenlose Sichtbarkeits-Analyse starten",
+        url: "#analyse",
+    },
+    secondaryCTA: { text: "In 2 Minuten erklärt", url: "#demo" },
+    media: "https://images.unsplash.com/photo-1542204165-65bf26472b9b?q=80&w=1600&auto=format&fit=crop",
+};
+
+const problemData = {
+    headline: "Klassische Produktfotografie bremst Ihr Wachstum",
+    transition: "Es ist Zeit für einen besseren Weg.",
+    painPoints: [
+        {
+            icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>`,
+            text: "Hohe Kosten für Fotografen, Studios und Requisiten.",
+        },
+        {
+            icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>`,
+            text: "Wochenlange Wartezeiten bis die Bilder im Shop sind.",
+        },
+        {
+            icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636m12.728 12.728L5.636 5.636" /></svg>`,
+            text: "Fehlende Flexibilität für saisonale Kampagnen.",
+        },
+    ],
+};
+
+const metricsData = [
+    {
+        number: "85%",
+        label: "Kostenersparnis",
+        description: "gegenüber klassischen Werbeshootings.",
+    },
+    {
+        number: "24h",
+        label: "Lieferzeit",
+        description: "von Ihrem Foto zum finalen Werbebild.",
+    },
+    {
+        number: "10x",
+        label: "Mehr Varianten",
+        description: "endlos viele Hintergründe für Social Media.",
+    },
+];
+
+const featuresData = {
+    headline: "So funktioniert unser KI-Fotoshooting",
+    features: [
+        {
+            title: "Sie laden ein einfaches Foto hoch",
+            description:
+                "Ein normales Smartphone-Foto vor einem neutralen Hintergrund reicht völlig aus. Keine Profi-Ausleuchtung nötig.",
+            image: "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?q=80&w=1600&auto=format&fit=crop",
+        },
+        {
+            title: "Die KI erkennt das Produkt perfekt",
+            description:
+                "Unsere speziell trainierte KI stellt das Produkt millimetergenau frei und bewahrt alle Details, Texturen und Schattenwürfe.",
+            image: "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=1600&auto=format&fit=crop",
+        },
+        {
+            title: "Ihre Wunsch-Atmosphäre auf Knopfdruck",
+            description:
+                "Egal ob am Strand, im minimalistischen Studio oder weihnachtlich dekoriert: Sie erhalten dutzende Varianten für alle Kanäle.",
+            image: "https://images.unsplash.com/photo-1600607688066-890987f18a86?q=80&w=1600&auto=format&fit=crop",
+        },
+    ],
+};
+
+const demoData = {
+    headline: "Sehen Sie den Unterschied",
+    description:
+        "Vom langweiligen Lager-Foto zum hochkonvertierenden Social Media Bild in wenigen Minuten.",
+    mediaOption: "slider" as const,
+    mediaSource: {
+        before: "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?q=80&w=1600&auto=format&fit=crop&grayscale",
+        after: "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?q=80&w=1600&auto=format&fit=crop",
+    },
+    cta: {
+        text: "Das wollen Sie auch? → Sichtbarkeits-Analyse",
+        url: "#analyse",
+    },
+};
+
+const ecosystemData = {
+    headline: "Kein Einzeltool. Teil Ihres Wachstumssystems.",
+    connections: [
+        "Ihre KI-generierten Fotos fließen automatisch in Ihre Meta Ads Kampagnen ein.",
+        "Social Media Posts für Instagram und Facebook werden direkt mit den neuen Bildern geplant.",
+        "A/B Testing: Das System lernt, welche Foto-Hintergründe in Ihrer Region am besten konvertieren.",
+    ],
+};
+
+const pricingData = {
+    headline: "Was kosten KI Fotoshootings?",
+    teaser: "Enthalten in unserem Growth-Paket oder ab 49€ / Monat.",
+    roiHint:
+        "Rechnet sich bereits beim Verzicht auf ein halbes Fotografen-Shooting im Jahr.",
+    cta: { text: "Alle Pakete vergleichen", url: "/preise" },
+};
+
+const faqData = [
+    {
+        question: "Brauche ich dafür eine gute Kamera?",
+        answer: "Nein, ein halbwegs modernes Smartphone (iPhone, Samsung etc.) reicht völlig aus. Wir geben Ihnen eine kurze Anleitung, worauf Sie achten müssen (z.B. gutes Tageslicht).",
+    },
+    {
+        question: "Sehen die Bilder echt aus?",
+        answer: "Ja. Unsere KI-Modelle sind speziell auf hyperrealistische Produktfotografie trainiert. Beleuchtung, Reflexionen und Schattenwürfe passen sich dynamisch dem Hintergrund an.",
+    },
+    {
+        question: "Muss ich technisch etwas einrichten?",
+        answer: "Nein, wir richten den Zugang für Sie ein. Sie laden die Bilder hoch, wir übernehmen bei Bedarf sogar den kompletten Generierungs-Prozess für die Kampagnen.",
+    },
+    {
+        question: "Bin ich an einen langen Vertrag gebunden?",
+        answer: "Wir glauben an Leistung, nicht an Knebelverträge. Adbites ist monatlich kündbar.",
+    },
+];
+
+const ctaData = {
+    headline: "Bereit für den nächsten Schritt?",
+    description:
+        "Lassen Sie uns gemeinsam herausfinden, wie viel ungenutztes Potenzial in Ihrem Geschäft steckt.",
+    button: {
+        text: "Kostenlose Sichtbarkeits-Analyse starten",
+        url: "#analyse",
+    },
+    trustText: "Kein Vertrag. Keine Verpflichtung. Nur Klarheit.",
+};
+
+const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "Adbites KI Fotoshootings",
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Web",
+    description:
+        "Erstellen Sie professionelle Produktfotos für Ihren stationären Handel mit KI, ohne teure Fotografen oder Studios.",
+};
+
+const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqData.map((f) => ({
+        "@type": "Question",
+        name: f.question,
+        acceptedAnswer: {
+            "@type": "Answer",
+            text: f.answer,
+        },
+    })),
+};
+---
+
+<Layout title="KI Fotoshootings für Einzelhändler | Adbites">
+    <!-- Inject Schema.org markup -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+    <Navbar />
+
+    <main>
+        <ProductHero {...heroData} />
+
+        <!-- Assuming Logos is shared/global -->
+        <div class="bg-[#0d0101] py-10 border-t border-white/5">
+            <p
+                class="text-center text-slate-500 font-medium uppercase tracking-widest text-sm mb-6"
+            >
+                Vertraut von führenden Händlern
+            </p>
+            <Logos />
+        </div>
+
+        <ProductProblem {...problemData} />
+        <ProductMetrics metrics={metricsData} />
+        <ProductFeatures {...featuresData} />
+        <ProductDemo {...demoData} />
+        <ProductEcosystem {...ecosystemData} />
+
+        <!-- Testimonials placeholder (using the Global one from homepage or a specific one) -->
+
+        <ProductPricing {...pricingData} />
+        <ProductFAQ faqs={faqData} />
+        <ProductCTA {...ctaData} />
+    </main>
+</Layout>

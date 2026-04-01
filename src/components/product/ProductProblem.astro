@@ -1,0 +1,53 @@
+---
+interface PainPoint {
+    icon: string; // SVG HTML
+    text: string;
+}
+
+interface Props {
+    headline: string;
+    painPoints: PainPoint[];
+    transition: string;
+}
+
+const { headline, painPoints, transition } = Astro.props;
+---
+
+<section class="py-24 bg-[#0d0101] px-4 relative">
+    <div class="max-w-7xl mx-auto relative z-10">
+        <!-- Header -->
+        <div class="text-center mb-16 max-w-3xl mx-auto">
+            <h2
+                class="text-3xl md:text-5xl font-heading font-bold text-white mb-6"
+            >
+                {headline}
+            </h2>
+        </div>
+
+        <!-- Pain Points Grid -->
+        <div
+            class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-16"
+        >
+            {
+                painPoints.map((pain) => (
+                    <div class="bg-red-500/5 border border-red-500/10 rounded-[2rem] p-8 flex flex-col items-center text-center hover:bg-red-500/10 transition-colors duration-300">
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-red-500/10 flex items-center justify-center text-red-500 mb-6 shadow-inner"
+                            set:html={pain.icon}
+                        ></div>
+                        <p class="text-slate-300 text-lg leading-relaxed">
+                            {pain.text}
+                        </p>
+                    </div>
+                ))
+            }
+        </div>
+
+        <!-- Problem Transition -->
+        <div class="text-center max-w-3xl mx-auto">
+            <p class="text-xl md:text-2xl font-medium text-brand-primary">
+                {transition}
+            </p>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,37 @@
+---
+interface Metric {
+    number: string;
+    label: string;
+    description: string;
+}
+
+interface Props {
+    metrics: Metric[];
+}
+
+const { metrics } = Astro.props;
+---
+
+<section class="py-16 bg-[#111] border-y border-white/5 relative z-20">
+    <div class="max-w-7xl mx-auto px-4">
+        <div
+            class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 divide-y md:divide-y-0 md:divide-x divide-white/10"
+        >
+            {
+                metrics.map((metric) => (
+                    <div class="flex flex-col items-center text-center pt-8 md:pt-0 first:pt-0 px-4">
+                        <div class="text-4xl md:text-6xl font-heading font-bold text-brand-primary tracking-tight mb-2">
+                            {metric.number}
+                        </div>
+                        <div class="text-lg md:text-xl font-bold text-white mb-3 tracking-wide">
+                            {metric.label}
+                        </div>
+                        <p class="text-slate-400 text-sm max-w-xs leading-relaxed">
+                            {metric.description}
+                        </p>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</section>

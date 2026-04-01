@@ -1,0 +1,34 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+
+@font-face {
+  font-family: 'GT Walsheim';
+  src: url('/assets/fonts/GTWalsheimPro-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --color-brand-dark: #020617;
+  --color-brand-primary: #ff5800;
+
+  --font-heading: 'GT Walsheim', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-brand-dark text-white font-body selection:bg-brand-primary selection:text-white;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading tracking-tight;
+  }
+}

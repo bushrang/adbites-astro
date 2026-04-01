@@ -1,0 +1,139 @@
+---
+interface Props {
+    data?: {
+        name: string;
+        imageUrl?: string;
+        textMarkup?: string;
+        customClass?: string;
+    }[];
+}
+
+const { data } = Astro.props;
+
+// Fallback to original hardcoded data if no Sanity data is provided
+const logos =
+    data && data.length > 0
+        ? data
+        : [
+              {
+                  name: "happybaby",
+                  textMarkup: "happy<span class='font-normal'>♡baby</span>",
+              },
+              { name: "HolzLand", textMarkup: "HolzLand" },
+              {
+                  name: "BABYMAXX",
+                  textMarkup: "BABY<br />MAXX",
+                  customClass: "tracking-widest",
+              },
+              {
+                  name: "MOBEXO",
+                  textMarkup: "MOBEXO.",
+                  customClass: "tracking-widest",
+              },
+              {
+                  name: "allbaby",
+                  textMarkup: "all<span class='text-brand-primary'>baby</span>",
+              },
+              {
+                  name: "ternx",
+                  textMarkup: "ternx",
+                  customClass: "tracking-widest lowercase",
+              },
+          ];
+---
+
+<section class="py-12 bg-[#0d0101] overflow-hidden relative group">
+    <!-- Fade Masks -->
+    <div
+        class="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#0d0101] to-transparent z-10 pointer-events-none"
+    >
+    </div>
+    <div
+        class="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#0d0101] to-transparent z-10 pointer-events-none"
+    >
+    </div>
+
+    <div class="flex w-max animate-scroll group-hover:paused">
+        <!-- Original Set -->
+        <div
+            class="flex shrink-0 gap-16 px-8 items-center opacity-40 grayscale hover:grayscale-0 transition-all duration-500"
+        >
+            {
+                logos.map((logo) =>
+                    logo.imageUrl ? (
+                        <img
+                            src={logo.imageUrl}
+                            alt={logo.name || "Partner Logo"}
+                            class={`shrink-0 h-8 md:h-12 w-auto object-contain ${logo.customClass || ""}`}
+                            loading="lazy"
+                        />
+                    ) : (
+                        <span
+                            class={`shrink-0 text-xl font-bold font-heading whitespace-nowrap ${logo.customClass || ""}`}
+                            set:html={logo.textMarkup}
+                        />
+                    ),
+                )
+            }
+        </div>
+        <!-- Duplicate Set for Infinite Loop -->
+        <div
+            class="flex shrink-0 gap-16 px-8 items-center opacity-40 grayscale hover:grayscale-0 transition-all duration-500"
+        >
+            {
+                logos.map((logo) =>
+                    logo.imageUrl ? (
+                        <img
+                            src={logo.imageUrl}
+                            alt={logo.name || "Partner Logo"}
+                            class={`shrink-0 h-8 md:h-12 w-auto object-contain ${logo.customClass || ""}`}
+                            loading="lazy"
+                        />
+                    ) : (
+                        <span
+                            class={`shrink-0 text-xl font-bold font-heading whitespace-nowrap ${logo.customClass || ""}`}
+                            set:html={logo.textMarkup}
+                        />
+                    ),
+                )
+            }
+        </div>
+        <!-- Triplicate Set for Infinite Loop safety on wide screens -->
+        <div
+            class="flex shrink-0 gap-16 px-8 items-center opacity-40 grayscale hover:grayscale-0 transition-all duration-500"
+        >
+            {
+                logos.map((logo) =>
+                    logo.imageUrl ? (
+                        <img
+                            src={logo.imageUrl}
+                            alt={logo.name || "Partner Logo"}
+                            class={`shrink-0 h-8 md:h-12 w-auto object-contain ${logo.customClass || ""}`}
+                            loading="lazy"
+                        />
+                    ) : (
+                        <span
+                            class={`shrink-0 text-xl font-bold font-heading whitespace-nowrap ${logo.customClass || ""}`}
+                            set:html={logo.textMarkup}
+                        />
+                    ),
+                )
+            }
+        </div>
+    </div>
+</section>
+
+<style>
+    .animate-scroll {
+        animation: scroll 60s linear infinite;
+    }
+
+    @keyframes scroll {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX(-33.333333%);
+        }
+    }
+</style>

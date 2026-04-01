@@ -1,0 +1,146 @@
+---
+import { PortableText } from "astro-portabletext";
+
+interface Props {
+    data: {
+        clientName: string;
+        challenge: string;
+        solution: string;
+        result: {
+            metric: string;
+            value: string;
+        };
+        videoUrl?: string;
+    }[];
+}
+
+const { data } = Astro.props;
+
+if (!data || data.length === 0) {
+    return null;
+}
+---
+
+<section class="py-24 px-6 relative -mt-32 pt-56">
+    <!-- Background Glows -->
+    <div
+        class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-brand-primary/20 blur-[120px] rounded-full pointer-events-none"
+    >
+    </div>
+    <div
+        class="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-brand-accent/10 blur-[120px] rounded-full pointer-events-none"
+    >
+    </div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+        <div class="text-center mb-16">
+            <span
+                class="inline-block py-1 px-3 rounded-full bg-white/5 border border-white/10 text-brand-primary text-sm font-bold mb-4"
+            >
+                Proven Results
+            </span>
+            <h2
+                class="text-3xl md:text-5xl font-bold mb-6 bg-gradient-to-br from-gray-200 to-white bg-clip-text text-transparent"
+            >
+                Retail Success Stories
+            </h2>
+            <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+                Echte Ergebnisse aus dem stationären Einzelhandel.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 gap-16">
+            {
+                data.map((caseStudy, index) => (
+                    <div class="group relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden hover:border-brand-primary/30 transition-all duration-500">
+                        {/* Glass Shine Effect */}
+                        <div class="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+                        <div class="grid lg:grid-cols-2 gap-0">
+                            {/* Media Column */}
+                            <div class="relative h-[400px] lg:h-auto overflow-hidden bg-black/50">
+                                {caseStudy.videoUrl ? (
+                                    <video
+                                        src={caseStudy.videoUrl}
+                                        class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                                        autoplay
+                                        loop
+                                        muted
+                                        playsinline
+                                    />
+                                ) : (
+                                    <div class="w-full h-full flex items-center justify-center bg-gray-900">
+                                        <span class="text-gray-600">
+                                            No Media
+                                        </span>
+                                    </div>
+                                )}
+                                <div class="absolute bottom-0 left-0 w-full p-8 bg-gradient-to-t from-black/80 to-transparent">
+                                    <h3 class="text-3xl font-bold mb-2 bg-gradient-to-br from-gray-200 to-white bg-clip-text text-transparent">
+                                        {caseStudy.clientName}
+                                    </h3>
+                                </div>
+                            </div>
+
+                            {/* Content Column */}
+                            <div class="p-8 lg:p-12 flex flex-col justify-center relative overflow-hidden">
+                                {/* Text Glow (Base) */}
+                                <div class="absolute inset-0 bg-brand-primary/5 blur-3xl rounded-full pointer-events-none" />
+
+                                {/* Interactive Corner Glow */}
+                                <div class="absolute -top-20 -right-20 w-64 h-64 bg-brand-primary/20 blur-[80px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+
+                                <div class="space-y-8 relative z-10">
+                                    {/* Challenge */}
+                                    <div>
+                                        <div class="flex items-center gap-2 mb-2">
+                                            <div class="w-2 h-2 rounded-full bg-red-500" />
+                                            <span class="text-xs uppercase tracking-widest text-gray-400">
+                                                Ausgangslage
+                                            </span>
+                                        </div>
+                                        <p class="text-gray-300 leading-relaxed text-lg">
+                                            {caseStudy.challenge}
+                                        </p>
+                                    </div>
+
+                                    {/* Solution */}
+                                    <div>
+                                        <div class="flex items-center gap-2 mb-2">
+                                            <div class="w-2 h-2 rounded-full bg-blue-500" />
+                                            <span class="text-xs uppercase tracking-widest text-gray-400">
+                                                Lösung
+                                            </span>
+                                        </div>
+                                        <p class="text-gray-300 leading-relaxed text-lg">
+                                            {caseStudy.solution}
+                                        </p>
+                                    </div>
+
+                                    {/* Result */}
+                                    <div class="pt-6 border-t border-white/10">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <span class="block text-sm text-gray-400 mb-1">
+                                                    Ergebnis
+                                                </span>
+                                                <span class="text-xl text-white font-medium">
+                                                    {caseStudy.result?.metric}
+                                                </span>
+                                            </div>
+                                            <div class="text-right">
+                                                <span class="block text-4xl md:text-5xl font-bold text-brand-accent tabular-nums tracking-tight">
+                                                    {caseStudy.result?.value}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</section>

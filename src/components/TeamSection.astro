@@ -1,0 +1,153 @@
+---
+interface Props {
+  data?: any;
+}
+
+const { data } = Astro.props;
+
+const heroBadgeText = data?.heroBadgeText || "Adbites Original";
+const headline = data?.headline || "THE<br/>A-TEAM";
+const description = data?.description || "Eine Spezial-Einheit aus Creatives, Strategen und Performance-Experten. Wir produzieren nicht nur schönen Content, wir bauen Sales-Maschinen für deinen lokalen Handel.";
+const heroImage = data?.heroImage || "https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80";
+
+const teamMembers = data?.members?.length ? data.members : [
+  {
+    name: "Emma Schneider",
+    role: "Project Manager",
+    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    name: "Marek Kowalski",
+    role: "Graphic Designer",
+    image: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    name: "Noah Jensen",
+    role: "Content Creator",
+    image: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    name: "Sofia Novak",
+    role: "SEO Specialist",
+    image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    name: "Lukas Weber",
+    role: "Sales Manager",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    name: "Mia Wagner",
+    role: "Copywriter",
+    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+  },
+];
+---
+<section class="min-h-[90vh] bg-[#0d0101] relative flex flex-col justify-end pt-32 pb-8 overflow-hidden" id="team">
+    <!-- Netflix-style Background Image -->
+    <div class="absolute inset-0 z-0 select-none">
+        <img 
+            src={heroImage} 
+            alt="The Team" 
+            class="w-full h-full object-cover object-right md:object-center opacity-40 mix-blend-luminosity md:mix-blend-normal"
+        />
+        <!-- Dramatic gradient overlays -->
+        <!-- Fade from black on bottom -->
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0d0101] via-[#0d0101]/60 to-transparent"></div>
+        <!-- Fade from black on left -->
+        <div class="absolute inset-0 bg-gradient-to-r from-[#0d0101] via-[#0d0101]/80 to-transparent w-full md:w-3/4 lg:w-2/3"></div>
+    </div>
+
+    <!-- Content Block -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full mb-12 lg:mb-16">
+        <div class="max-w-2xl">
+            <!-- Normal Headline -->
+            <h2 class="text-4xl md:text-6xl font-bold tracking-tight text-white leading-[1.1] font-sans mb-6" set:html={headline}>
+            </h2>
+
+            <!-- Intro text -->
+            <p class="text-lg md:text-xl text-slate-300 mb-8 max-w-xl leading-relaxed">
+                {description}
+            </p>
+        </div>
+    </div>
+
+    <!-- Carousel area: same container as rest of site for perfect alignment -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <!-- Subtitle & Controls -->
+        <div class="mb-4 flex items-end justify-between">
+            <h3 class="text-white text-xl md:text-2xl font-bold tracking-tight">Die Köpfe dahinter</h3>
+            <!-- Small Navigation Arrows -->
+            <div class="hidden md:flex items-center gap-3 shrink-0">
+                <button id="prevBtn" class="h-10 w-10 border border-white/20 rounded-full bg-transparent text-white flex items-center justify-center hover:bg-white/10 hover:border-white/40 transition-colors cursor-pointer group" aria-label="Previous">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 group-hover:-translate-x-0.5 transition-transform">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                    </svg>
+                </button>
+                <button id="nextBtn" class="h-10 w-10 border border-white/20 rounded-full bg-transparent text-white flex items-center justify-center hover:bg-white/10 hover:border-white/40 transition-colors cursor-pointer group" aria-label="Next">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 group-hover:translate-x-0.5 transition-transform">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Carousel with right gradient overlay — negative right margin bleeds to screen edge -->
+        <div class="relative -mr-4 sm:-mr-6 lg:-mr-8 xl:-mr-[calc((100vw-80rem)/2+2rem)]">
+            <!-- Right fade gradient (pinned to actual right edge of viewport) -->
+            <div class="pointer-events-none absolute right-0 top-0 bottom-0 w-16 md:w-24 lg:w-32 bg-gradient-to-l from-[#0d0101] to-transparent z-20"></div>
+
+            <div 
+                id="carouselContainer" 
+                class="flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory pb-8 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+            >
+                {teamMembers.map((member: any) => (
+                    <div class="snap-start shrink-0 w-[160px] md:w-[220px] lg:w-[260px] group cursor-grab active:cursor-grabbing">
+                        <!-- Image Wrapper -->
+                        <div class="w-full aspect-[4/5] bg-[#141414] rounded overflow-hidden relative shadow-lg">
+                            <img 
+                                src={member.image} 
+                                alt={member.name} 
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                                loading="lazy"
+                            />
+                            <!-- Subtle dark fade at bottom of card -->
+                            <div class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        </div>
+                        <!-- Text Area -->
+                        <div class="mt-2 text-left">
+                            <h3 class="text-sm md:text-base font-bold text-white tracking-tight leading-tight">
+                                {member.name}
+                            </h3>
+                            <p class="text-[10px] md:text-xs tracking-wide text-gray-400 mt-0.5">{member.role}</p>
+                        </div>
+                    </div>
+                ))}
+                
+                <!-- End spacer so last card clears the gradient -->
+                <div class="shrink-0 w-16 md:w-24 lg:w-32"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    const container = document.getElementById('carouselContainer');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    
+    if (container && prevBtn && nextBtn) {
+        const getScrollAmount = () => {
+             const card = container.querySelector('.snap-start');
+             return card ? (card as HTMLElement).offsetWidth + 24 : 344;
+        };
+
+        nextBtn.addEventListener('click', () => {
+            container.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+        });
+
+        prevBtn.addEventListener('click', () => {
+            container.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+        });
+    }
+</script>

@@ -1,0 +1,28 @@
+---
+import { urlFor } from "../../lib/sanity";
+const { node } = Astro.props;
+
+let url = "";
+let altText = "Blog Image";
+
+try {
+    if (node && node.asset) {
+        url = urlFor(node).width(800).auto("format").url();
+    }
+} catch (e) {
+    console.error("Error generating image url for portable text:", e);
+}
+---
+
+{
+    url ? (
+        <figure class="my-8">
+            <img
+                src={url}
+                alt={altText}
+                class="w-full rounded-xl border border-zinc-800 shadow-lg object-cover"
+                loading="lazy"
+            />
+        </figure>
+    ) : null
+}

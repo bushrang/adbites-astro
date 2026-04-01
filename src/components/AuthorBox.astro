@@ -1,0 +1,40 @@
+---
+import { sanityClient } from "sanity:client";
+import { GROQ_PERSON } from "../lib/sanityQueries";
+
+interface Props {
+    personData?: any;
+}
+
+const { personData } = Astro.props;
+
+// Fetch if not provided
+let person = personData;
+if (!person) {
+    person = await sanityClient.fetch(GROQ_PERSON);
+}
+
+const { name, role, image } = person || {};
+---
+
+<div
+    class="flex items-center gap-4 p-4 bg-white/5 border border-white/10 rounded-xl max-w-sm"
+>
+    <div
+        class="w-12 h-12 rounded-full overflow-hidden bg-slate-800 shrink-0 border border-white/10"
+    >
+        {
+            image && (
+                <img
+                    src={image}
+                    alt={name}
+                    class="w-full h-full object-cover"
+                />
+            )
+        }
+    </div>
+    <div>
+        <h4 class="text-white font-bold text-sm mb-0.5">{name}</h4>
+        <p class="text-brand-primary text-xs">{role}</p>
+    </div>
+</div>

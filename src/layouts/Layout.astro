@@ -1,0 +1,83 @@
+---
+import "../styles/global.css";
+import Navbar from "../components/Navbar.astro";
+import SchemaGraph from "../components/SchemaGraph.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+	title: string;
+	description?: string;
+	lang?: string;
+}
+
+const {
+	title,
+	description = "Adbites Astro - Leading Agency for SEO/GEO Technology",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang={Astro.props.lang || "de"} class="scroll-smooth">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content={description} />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+
+		<!-- Fonts: Inter -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={Astro.url} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta
+			property="og:image"
+			content={new URL("/og-image.jpg", Astro.url)}
+		/>
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:url" content={Astro.url} />
+		<meta property="twitter:title" content={title} />
+		<meta property="twitter:description" content={description} />
+		<meta
+			property="twitter:image"
+			content={new URL("/og-image.jpg", Astro.url)}
+		/>
+
+		<!-- GEO/SEO: JSON-LD Graph -->
+		<SchemaGraph />
+
+		<!-- Speculative Rules API for instant navigation -->
+		<script type="speculationrules">
+			{
+				"prerender": [
+					{
+						"source": "document",
+						"where": {
+							"href_matches": "/*"
+						},
+						"eagerness": "moderate"
+					}
+				]
+			}
+		</script>
+		<slot name="head" />
+	</head>
+	<body
+		class="bg-brand-dark text-white font-sans antialiased selection:bg-brand-primary selection:text-brand-dark overflow-x-hidden"
+	>
+		<Navbar />
+		<slot />
+		<Footer />
+	</body>
+</html>

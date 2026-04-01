@@ -1,0 +1,118 @@
+---
+interface Props {
+    data?: {
+        headline?: string;
+        imageUrl?: string;
+        screenVideoUrl?: string;
+        contentBlocks?: {
+            leadIn?: string;
+            text: string;
+        }[];
+    };
+}
+
+const { data } = Astro.props;
+
+// Default values
+const defaultHeadline = "A co-worker <br /> who’s always on <br /> the clock.";
+const defaultImage = "/assets/images/avatarpreview.avif";
+const defaultVideo = "/assets/videos/adbites_demo.mp4"; // We'll need a fallback here or it will just be blank!
+const defaultContentBlocks = [
+    {
+        leadIn: "Available 24/7.",
+        text:
+            "The only employees who love overtime. Always ready to save your most valuable asset—your time.",
+    },
+    {
+        leadIn: "Speaks 100+ languages.",
+        text:
+            "Go global—select, communicate, and complete your work in over 100 languages.",
+    },
+];
+
+// Use Sanity data if available
+const headline = data?.headline || defaultHeadline;
+const imageUrl = data?.imageUrl || defaultImage;
+const screenVideoUrl = data?.screenVideoUrl || defaultVideo;
+const contentBlocks =
+    data?.contentBlocks && data.contentBlocks.length > 0
+        ? data.contentBlocks
+        : defaultContentBlocks;
+---
+
+<section class="bg-black py-24 px-6 overflow-hidden">
+    <div class="max-w-7xl mx-auto">
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+            {/* Left Column: Image wrapper with Video Underlay */}
+            <div class="relative flex justify-center lg:justify-end">
+                <div
+                    class="relative w-[160%] max-w-none -ml-[25%] lg:-ml-[10%]"
+                >
+                    {/* Radial gradient behind phone */}
+                    <div
+                        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-brand-primary/20 blur-[100px] rounded-full pointer-events-none"
+                    >
+                    </div>
+
+                    {/* The Video Underlay (Sandwich layer 1) */}
+                    {
+                        /* We will adjust these top/left/w/h percentages using the browser subagent in a moment */
+                    }
+                    {
+                        screenVideoUrl && (
+                            <video
+                                src={screenVideoUrl}
+                                class="absolute z-0 w-[33.5%] h-[84.5%] top-[1%] left-[35.5%] object-cover rounded-[35px] bg-black"
+                                autoplay
+                                loop
+                                muted
+                                playsinline
+                            />
+                        )
+                    }
+
+                    {/* The Transparent Overlay Image (Sandwich layer 2) */}
+                    <img
+                        src={imageUrl}
+                        alt="Hand holding phone with AI assistant"
+                        class="relative z-10 w-full h-auto drop-shadow-2xl pointer-events-none"
+                    />
+                </div>
+            </div>
+
+            {/* Right Column: Content */}
+            <div class="text-white space-y-12">
+                <div>
+                    <!-- Ghost Button Badge -->
+                    <div class="mb-6">
+                        <span class="inline-block px-4 py-1.5 rounded-full border border-white/20 text-white text-sm font-medium backdrop-blur-md bg-white/5">
+                            Adbites Avatar+
+                        </span>
+                    </div>
+
+                    <h2
+                        class="text-4xl md:text-6xl font-bold leading-[1.1] tracking-tight"
+                        set:html={headline}
+                    />
+                </div>
+
+                <div class="space-y-8 max-w-lg">
+                    {
+                        contentBlocks.map((block) => (
+                            <div>
+                                {block.leadIn && (
+                                    <h3 class="text-xl font-bold mb-2">
+                                        {block.leadIn}
+                                    </h3>
+                                )}
+                                <p class="text-gray-400 text-lg leading-relaxed">
+                                    {block.text}
+                                </p>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

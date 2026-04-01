@@ -1,0 +1,68 @@
+---
+interface Props {
+    headline: string;
+    description: string;
+    button: { text: string; url: string };
+    trustText: string;
+}
+
+const { headline, description, button, trustText } = Astro.props;
+---
+
+<section class="py-32 bg-brand-primary px-4 relative overflow-hidden z-20">
+    <!-- Pattern Background overlay -->
+    <div
+        class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1.5px,transparent_1.5px)] [background-size:24px_24px]"
+    >
+    </div>
+
+    <div class="max-w-4xl mx-auto text-center relative z-10">
+        <h2
+            class="text-4xl md:text-6xl font-heading font-bold text-white mb-8 tracking-tight"
+        >
+            {headline}
+        </h2>
+        <p
+            class="text-xl md:text-2xl text-white/90 mb-12 max-w-2xl mx-auto leading-relaxed"
+        >
+            {description}
+        </p>
+
+        <a
+            href={button.url}
+            class="inline-flex justify-center items-center px-10 py-5 rounded-full bg-white text-brand-primary font-bold hover:bg-slate-100 transition-transform hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/20 duration-300 text-xl mb-8 group"
+        >
+            {button.text}
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="2"
+                stroke="currentColor"
+                class="w-6 h-6 ml-2 group-hover:translate-x-1 transition-transform"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"></path>
+            </svg>
+        </a>
+
+        <div
+            class="flex items-center justify-center gap-2 text-white/80 font-medium text-lg"
+        >
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                class="w-5 h-5"
+            >
+                <path
+                    fill-rule="evenodd"
+                    d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z"
+                    clip-rule="evenodd"></path>
+            </svg>
+            {trustText}
+        </div>
+    </div>
+</section>

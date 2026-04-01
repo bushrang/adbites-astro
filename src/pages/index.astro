@@ -1,0 +1,84 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import Hero from "../components/Hero.astro";
+import Intro from "../components/Intro.astro";
+import ServicesImage from "../components/ServicesImage.astro";
+import AvatarSection from "../components/AvatarSection.astro";
+import ShopPilotSection from "../components/ShopPilotSection.astro";
+import AdbitesAdLift from "../components/AdbitesAdLift.astro";
+import FounderDemo from "../components/FounderDemo.astro";
+import ProofOfConcept from "../components/ProofOfConcept.astro";
+import ImageDivider from "../components/ImageDivider.astro";
+import Testimonials from "../components/Testimonials.astro";
+import TeamSection from "../components/TeamSection.astro";
+import PricingSection from "../components/PricingSection.astro";
+import FaqSection from "../components/FaqSection.astro";
+import Logos from "../components/Logos.astro";
+import CasesSection from "../components/CasesSection.astro";
+import { sanityClient } from "../lib/sanity";
+import { GROQ_HOMEPAGE } from "../lib/sanityQueries";
+
+let homepageData;
+try {
+	homepageData = await sanityClient.fetch(GROQ_HOMEPAGE);
+} catch (e) {
+	console.error("Error fetching homepage data:", e);
+}
+
+// ----------------------------------------------------------------------
+// VERCEL EDGE PERSONALIZATION ENGINE (Template Variables)
+// ----------------------------------------------------------------------
+if (homepageData) {
+	// 1. Get user's city from Vercel's Global Edge Network header
+	// 2. Fallback to a URL parameter (?city=Bochum) for local testing
+	const vercelCity = Astro.request.headers.get("x-vercel-ip-city");
+	const urlCity = Astro.url.searchParams.get("city");
+	const detectedCity = urlCity || vercelCity;
+
+	// Helper function to replace {{city}} or {{city|fallback text}}
+	const replacePersonalizationTags = (text: string) => {
+		if (!text) return text;
+
+		return text.replace(
+			/\{\{city(?:\|([^}]+))?\}\}/gi,
+			(match, fallback) => {
+				if (detectedCity) {
+					return detectedCity;
+				}
+				return fallback ? fallback.trim() : "deiner Umgebung";
+			},
+		);
+	};
+
+	homepageData.heroHeadline = replacePersonalizationTags(
+		homepageData.heroHeadline,
+	);
+	homepageData.heroSubline = replacePersonalizationTags(
+		homepageData.heroSubline,
+	);
+}
+// ----------------------------------------------------------------------
+---
+
+<Layout
+	title={homepageData?.seo?.metaTitle ||
+		"Adbites Astro | SEO & GEO Technology Agency"}
+>
+	<Navbar />
+	<Hero data={homepageData} />
+	<Logos data={homepageData?.logos} />
+	<Intro data={homepageData?.introSection} />
+	<ServicesImage />
+	<AvatarSection data={homepageData?.expertiseSection} />
+	<ShopPilotSection data={homepageData?.multiWorkspaceSection} />
+	<AdbitesAdLift data={homepageData?.adbitesAdLift} />
+	<FounderDemo data={homepageData?.founderDemoSection} />
+	<ProofOfConcept data={homepageData?.proofOfConceptSection} />
+	<ImageDivider />
+	<Testimonials data={homepageData?.testimonialsSection} />
+	<CasesSection data={homepageData?.casesSection} />
+	<TeamSection data={homepageData?.teamSection} />
+	<PricingSection />
+	<FaqSection />
+</Layout>

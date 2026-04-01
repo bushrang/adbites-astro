@@ -1,0 +1,78 @@
+---
+import { sanityClient } from "sanity:client";
+import { GROQ_SCHEMA_GRAPH } from "../lib/sanityQueries";
+
+const data = await sanityClient.fetch(GROQ_SCHEMA_GRAPH);
+const { organization, person, services } = data || {};
+
+const organizationSchema = organization
+    ? {
+          "@type": "Organization",
+          "@id": `${organization.url}/#organization`,
+          name: organization.name,
+          legalName: organization.legalName,
+          url: organization.url,
+          logo: organization.logo,
+          description: organization.description,
+          foundingDate: organization.foundingDate,
+          taxID: organization.taxId,
+          vatID: organization.vatId,
+          sameAs: organization.sameAs,
+          address: organization.address
+              ? {
+                    "@type": "PostalAddress",
+                    streetAddress: organization.address.streetAddress,
+                    addressLocality: organization.address.addressLocality,
+                    postalCode: organization.address.postalCode,
+                    addressCountry: organization.address.addressCountry,
+                }
+              : undefined,
+          geo: organization.geo
+              ? {
+                    "@type": "GeoCoordinates",
+                    latitude: organization.geo.lat,
+                    longitude: organization.geo.lng,
+                }
+              : undefined,
+          contactPoint: organization.contactPoints?.map((cp: any) => ({
+              "@type": "ContactPoint",
+              telephone: cp.telephone,
+              contactType: cp.contactType,
+              email: cp.email,
+              areaServed: organization.areaServed,
+          })),
+          founder: organization.founders?.map((founder: any) => ({
+              "@type": "Person",
+              name: founder.name,
+              image: founder.image,
+              jobTitle: founder.role,
+              sameAs: founder.sameAs,
+          })),
+          knowsAbout:
+              organization.knowsAbout || services?.map((s: any) => s.title),
+          areaServed: organization.areaServed,
+      }
+    : null;
+
+// Add Extended Attributes if present (Info Gain)
+if (organizationSchema && organization.managedBudget) {
+    // Custom property or note - schema.org is flexible but specific for rich results
+}
+
+const websiteSchema = {
+    "@type": "WebSite",
+    "@id": `${organization?.url || "https://adbites.astro.build"}/#website`,
+    url: organization?.url || "https://adbites.astro.build",
+    name: organization?.name || "Adbites Astro",
+    publisher: {
+        "@id": `${organization?.url || "https://adbites.astro.build"}/#organization`,
+    },
+};
+
+const graph = {
+    "@context": "https://schema.org",
+    "@graph": [organizationSchema, websiteSchema].filter(Boolean),
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(graph)} />

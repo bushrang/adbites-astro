@@ -1,0 +1,217 @@
+---
+interface Props {
+  data?: {
+    heroBadge?: string;
+    heroHeadline?: string;
+    heroSubline?: string;
+    ctaText?: string;
+    trustCount?: string;
+    trustText?: string;
+  };
+}
+
+const { data } = Astro.props;
+
+// Fallbacks
+const content = {
+  heroBadge: data?.heroBadge || "🚀 V2.0 ist jetzt verfügbar",
+  heroHeadline:
+    data?.heroHeadline || "Dein lokales Unternehmen,\nunfair erfolgreich.",
+  heroSubline:
+    data?.heroSubline ||
+    "Wir sind der führende Wachstums-Spezialist für den stationären Einzelhandel im deutschsprachigen Raum. Wenn du mehr Kunden und mehr Umsatz brauchst, sollten wir uns dringend mal kennenlernen.",
+  ctaText: data?.ctaText || "Kostenloses Erstgespräch",
+  trustCount: data?.trustCount || "280+",
+  trustText: data?.trustText || "Einzelhändler vertrauen uns",
+};
+---
+
+<section
+  class="min-h-screen flex flex-col justify-center items-center relative z-20 px-4 md:px-0 bg-[#0d0101]"
+>
+  <!-- Map Texture Background -->
+  <div
+    class="absolute inset-0 z-0 opacity-20 pointer-events-none mix-blend-overlay"
+    style="background-image: url('/noise.svg');"
+  >
+  </div>
+
+  <div
+    class="absolute inset-0 z-0 pointer-events-none flex items-center justify-center opacity-30"
+    style="mask-image: radial-gradient(circle at center, black 40%, transparent 80%); -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 80%);"
+  >
+    <div
+      class="w-full h-full opacity-60 mix-blend-screen"
+      style="background-image: url('/assets/images/city_map_pattern.avif'); background-size: 300px; background-repeat: repeat;"
+    >
+    </div>
+  </div>
+
+  <!-- Central Glow -->
+  <div
+    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-primary/20 rounded-full blur-[120px] pointer-events-none z-0"
+  >
+  </div>
+
+  <div class="z-10 text-center max-w-5xl mx-auto relative pt-20">
+    <!-- H1 Headline -->
+    <h1
+      class="text-4xl md:text-6xl lg:text-[4rem] font-heading font-bold tracking-tight text-white mb-6 leading-[1.05] animate-fade-in-up delay-100 drop-shadow-2xl"
+    >
+      <span set:html={content.heroHeadline.replace(/\n/g, "<br/>")} />
+    </h1>
+
+    <!-- Subheadline -->
+    <p
+      class="text-base md:text-lg text-slate-100 max-w-2xl mx-auto leading-relaxed mb-8 font-body animate-fade-in-up delay-200 font-light"
+    >
+      {content.heroSubline}
+    </p>
+
+    <!-- CTA -->
+    <div class="flex flex-col items-center gap-8 animate-fade-in-up delay-300">
+      <!-- Glow Border Button -->
+      <a href="#services" class="glow-border-btn">
+        <span class="glow-border-inner">Jetzt kostenlos starten</span>
+      </a>
+
+      <!-- Social Proof -->
+      <div class="flex items-center gap-4 text-sm text-slate-300 font-medium">
+        <div class="flex -space-x-2">
+          <!-- Avatars (Placeholders) -->
+          <div
+            class="w-8 h-8 rounded-full border-2 border-brand-dark bg-slate-700"
+          >
+          </div>
+          <div
+            class="w-8 h-8 rounded-full border-2 border-brand-dark bg-slate-600"
+          >
+          </div>
+          <div
+            class="w-8 h-8 rounded-full border-2 border-brand-dark bg-slate-500"
+          >
+          </div>
+          <div
+            class="w-8 h-8 rounded-full border-2 border-brand-dark bg-brand-dark text-[10px] flex items-center justify-center text-white font-bold bg-slate-800"
+          >
+            +280
+          </div>
+        </div>
+        <div class="flex flex-col items-start leading-tight">
+          <div class="flex text-brand-primary text-xs mb-0.5">★★★★★</div>
+          <span
+            >{content.trustCount}
+            <strong class="text-white">{content.trustText}</strong></span
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  .delay-100 {
+    animation-delay: 0.1s;
+  }
+  .delay-200 {
+    animation-delay: 0.2s;
+  }
+  .delay-300 {
+    animation-delay: 0.3s;
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* --- Circulating Glow Border Button --- */
+  .glow-border-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* 1px border via 1px padding */
+    padding: 1px;
+    border-radius: 10px;
+    text-decoration: none;
+    /* Thin conic gradient rotates for the border color */
+    background-image: conic-gradient(
+      from var(--angle, 0deg),
+      transparent 55%,
+      rgba(160, 80, 20, 0.5) 68%,
+      rgba(220, 120, 20, 0.85) 74%,
+      rgba(255, 200, 60, 0.9) 78%,
+      rgba(80, 200, 255, 0.7) 84%,
+      rgba(100, 80, 220, 0.5) 90%,
+      transparent 100%
+    );
+    animation: rotateBorder 4s linear infinite;
+    transition: opacity 0.3s;
+  }
+
+  /* Soft blurred halo layered behind the button */
+  .glow-border-btn::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 12px;
+    background-image: conic-gradient(
+      from var(--angle, 0deg),
+      transparent 55%,
+      rgba(160, 80, 20, 0.2) 68%,
+      rgba(220, 120, 20, 0.4) 74%,
+      rgba(255, 200, 60, 0.35) 78%,
+      rgba(80, 200, 255, 0.25) 84%,
+      rgba(100, 80, 220, 0.2) 90%,
+      transparent 100%
+    );
+    filter: blur(6px);
+    z-index: -1;
+    animation: rotateBorder 4s linear infinite;
+  }
+
+  .glow-border-btn:hover {
+    opacity: 0.85;
+  }
+
+  .glow-border-inner {
+    position: relative;
+    display: block;
+    background: #0c1628;
+    border-radius: 9px;
+    padding: 0.8rem 1.75rem;
+    color: #94a3b8;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    z-index: 1;
+    transition: color 0.3s, background 0.3s;
+  }
+
+  .glow-border-btn:hover .glow-border-inner {
+    background: #111f38;
+    color: #e2e8f0;
+  }
+
+  @property --angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+  }
+
+  @keyframes rotateBorder {
+    to {
+      --angle: 360deg;
+    }
+  }
+</style>

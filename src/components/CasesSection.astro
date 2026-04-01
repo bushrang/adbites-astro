@@ -1,0 +1,183 @@
+---
+interface Props {
+    data?: {
+        headline?: string;
+        subline?: string;
+        cases?: {
+            clientName: string;
+            image?: string;
+            challenge?: string;
+            solution?: string;
+        }[];
+    };
+}
+
+const { data } = Astro.props;
+
+// Fallback Mock Data
+const defaultHeadline = "Echte Ergebnisse für echte Kunden";
+const defaultSubline =
+    "Wir lösen komplexe Marketing-Herausforderungen. Hier sind einige Beispiele aus der Praxis.";
+const defaultCases = [
+    {
+        clientName: "HolzLand",
+        image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80", // Industrial / Store
+        challenge:
+            "Fragmentierte Werbemaßnahmen über 45 Standorte führten zu Ineffizienzen und fehlender lokaler Sichtbarkeit.",
+        solution:
+            "Implementierung einer zentralisierten Ad-Tech-Plattform mit automatisiertem Geo-Targeting für jeden Standort.",
+    },
+    {
+        clientName: "EK Retail",
+        image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=800&q=80", // Retail / Meeting
+        challenge:
+            "Geringe Online-Sichtbarkeit der Mitgliedshäuser im Vergleich zu reinen Online-Playern.",
+        solution:
+            "Entwicklung einer 'Local Hero' Strategie mit hyperlokalen SEO- und SEA-Kampagnen für 200+ Mitglieder.",
+    },
+    {
+        clientName: "Intersport",
+        image: "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=800&q=80", // Sports / Active
+        challenge:
+            "Schwierigkeit, die Offline-Verfügbarkeit von Produkten in Online-Ads effektiv zu kommunizieren.",
+        solution:
+            "Verknüpfung der lokalen Warenwirtschaftssysteme mit Google Local Inventory Ads in Echtzeit.",
+    },
+];
+
+const headline = data?.headline || defaultHeadline;
+const subline = data?.subline || defaultSubline;
+const cases = data?.cases && data.cases.length > 0 ? data.cases : defaultCases;
+---
+
+<section
+    class="relative bg-[#0d0101] py-24 px-6 overflow-hidden"
+    id="cases-section"
+>
+    {/* Static Background Mesh (Big Orange Glow) */}
+    <div
+        class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none"
+    >
+        <div
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-primary/30 rounded-full blur-[150px] mix-blend-screen opacity-80"
+        >
+        </div>
+    </div>
+
+    <div class="relative max-w-7xl mx-auto z-10">
+        <div class="text-center max-w-3xl mx-auto mb-20">
+            <h2
+                class="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight drop-shadow-2xl"
+            >
+                {headline}
+            </h2>
+            <p class="text-lg text-gray-400 leading-relaxed font-light">
+                {subline}
+            </p>
+        </div>
+
+        <div
+            class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 group/grid"
+            id="cases-grid"
+        >
+            {
+                cases.map((caseStudy, index) => (
+                    <div class="case-card group relative rounded-2xl p-[1px] overflow-hidden transition-transform duration-500 hover:-translate-y-2">
+                        {/* Spotlight Border */}
+                        <div
+                            class="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/10 to-transparent opacity-50 group-hover:opacity-100 transition-opacity"
+                            style="background: radial-gradient(600px circle at var(--x, 0px) var(--y, 0px), rgba(255,255,255,0.4), transparent 40%);"
+                        />
+
+                        {/* Card Background & Content */}
+                        <div class="relative h-full bg-black/40 backdrop-blur-2xl rounded-2xl p-6 flex flex-col overflow-hidden">
+                            {/* Inner Spotlight */}
+                            <div
+                                class="absolute inset-0 bg-brand-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                                style="background: radial-gradient(400px circle at var(--x, 0px) var(--y, 0px), rgba(var(--color-brand-primary), 0.1), transparent 40%);"
+                            />
+
+                            {/* Image with Parallax-like feel on hover */}
+                            <div class="mb-8 relative rounded-xl overflow-hidden shadow-2xl border border-white/5 group-hover:border-white/20 transition-colors duration-500">
+                                {caseStudy.image ? (
+                                    <img
+                                        src={caseStudy.image}
+                                        alt={`${caseStudy.clientName} Case Study`}
+                                        class="w-full h-52 object-cover transform scale-100 group-hover:scale-110 transition-transform duration-700 ease-out"
+                                    />
+                                ) : (
+                                    <div class="w-full h-48 flex items-center justify-center text-gray-500 bg-gray-900">
+                                        <span>No Image</span>
+                                    </div>
+                                )}
+                                <div class="absolute inset-0 ring-1 ring-inset ring-black/20 rounded-xl" />
+                            </div>
+
+                            {/* Floating Badge */}
+                            <div class="mb-6">
+                                <span class="inline-flex items-center px-3 py-1 text-xs font-bold tracking-widest text-white uppercase bg-white/5 backdrop-blur-md rounded-full border border-white/10 group-hover:border-brand-primary/50 group-hover:bg-brand-primary/20 group-hover:shadow-[0_0_20px_rgba(var(--color-brand-primary),0.3)] transition-all duration-500">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-brand-primary mr-2 animate-pulse" />
+                                    {caseStudy.clientName}
+                                </span>
+                            </div>
+
+                            <div class="space-y-6 flex-grow relative z-10">
+                                <div class="transform translate-y-0 transition-transform duration-500">
+                                    <h4 class="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold mb-3 group-hover:text-gray-300 transition-colors">
+                                        The Challenge
+                                    </h4>
+                                    <p class="text-gray-300 text-sm leading-relaxed font-light">
+                                        {caseStudy.challenge ||
+                                            "Keine Beschreibung verfügbar."}
+                                    </p>
+                                </div>
+
+                                <div class="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:via-white/20 transition-all duration-500 transform scale-x-50 group-hover:scale-x-100" />
+
+                                <div class="transform translate-y-0 transition-transform duration-500 delay-75">
+                                    <h4 class="text-[10px] uppercase tracking-[0.2em] text-brand-accent/80 font-bold mb-3 group-hover:text-brand-accent group-hover:drop-shadow-[0_0_5px_rgba(236,72,153,0.6)] transition-all">
+                                        Our Solution
+                                    </h4>
+                                    <p class="text-gray-300 text-sm leading-relaxed font-light">
+                                        {caseStudy.solution ||
+                                            "Keine Lösung verfügbar."}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</section>
+
+<script>
+    const casesGrid = document.getElementById("cases-grid");
+    const cards = document.querySelectorAll(".case-card");
+
+    if (casesGrid) {
+        casesGrid.addEventListener("mousemove", (e) => {
+            // @ts-ignore
+            const rect = casesGrid.getBoundingClientRect();
+            // @ts-ignore
+            const x = e.clientX - rect.left;
+            // @ts-ignore
+            const y = e.clientY - rect.top;
+
+            cards.forEach((card) => {
+                // @ts-ignore
+                const cardRect = card.getBoundingClientRect();
+                // @ts-ignore
+                const cardX = e.clientX - cardRect.left;
+                // @ts-ignore
+                const cardY = e.clientY - cardRect.top;
+
+                // @ts-ignore
+                card.style.setProperty("--x", `${cardX}px`);
+                // @ts-ignore
+                card.style.setProperty("--y", `${cardY}px`);
+            });
+        });
+    }
+</script>

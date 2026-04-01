@@ -1,0 +1,171 @@
+---
+interface Props {
+    data?: {
+        headline?: string;
+        subline?: string;
+        cards?: Array<{
+            badge?: string;
+            title?: string;
+            description?: string;
+            checklist?: string[];
+            variant?: string;
+            linkText?: string;
+        }>;
+    };
+}
+
+const { data } = Astro.props;
+
+// Fallback Data
+const headline = data?.headline || "Ein Partner. Alle Kanäle. Volle Frequenz.";
+const subline =
+    data?.subline ||
+    "Wir übernehmen Dein komplettes operatives Marketing – besser, schneller und günstiger.";
+
+const defaultCards = [
+    {
+        badge: "SM",
+        title: "Social Media Content",
+        description:
+            "Authentische Reels & Posts basierend auf Deinen echte Mitarbeitern (Digitaler Scan). 100% organische Reichweite ohne Zeitaufwand.",
+        checklist: [
+            "KI-generierte Videos",
+            "Echte Stimmen & Gesichter",
+            "Community Management",
+        ],
+    },
+    {
+        badge: "AD",
+        title: "Hyper-Lokale Meta Ads",
+        description:
+            "Anzeigen, die nur dort erscheinen, wo Deine Kunden wohnen. Unsere KI kennt Kaufkraft und Interessen in jeder PLZ.",
+        checklist: [
+            "Zielgruppen-Mapping",
+            "Automatisieres Budgeting",
+            "Wöchentliches Reporting",
+        ],
+    },
+    {
+        badge: "LP",
+        title: "Kampagnen-Landingpages",
+        description:
+            "Hochkonvertierende Seiten für Coupons, Events oder Newsletter-Abos. Direkt für Mobilgeräte optimiert.",
+        checklist: [
+            "Inkl. Hosting & Technik",
+            "Coupon-Generierung",
+            "DSGVO-konform",
+        ],
+    },
+    {
+        badge: "EM",
+        title: "Kundenbindung per Mail",
+        description:
+            "Automatisierte Newsletter-Strecken, die Deine Bestandskunden immer wieder zurück in den Laden führen.",
+        checklist: [
+            "Automatisierte Workflows",
+            "Segmentierung der Kunden",
+            "Verkaufsorientiertes Copywriting",
+        ],
+    },
+    {
+        badge: "RE",
+        title: "Bewertungs-Management",
+        description:
+            "Wir überwachen und beantworten Deine Google My Business Rezensionen. Für ein makelloses lokales Image.",
+        checklist: [
+            "KI-Antwortvorschläge",
+            "Review-Analyse",
+            "Reporting bei Negativ-Trends",
+        ],
+    },
+    {
+        variant: "highlight",
+        title: "Du sparst ca. <span class='text-brand-primary'>1.200€ / Monat</span>",
+        description:
+            "Gegenüber der Beauftragung einzelner Freelancer & Software-Tools.",
+        linkText: "Kosten-Vergleich ansehen",
+    },
+];
+
+const cards = data?.cards || defaultCards;
+---
+
+<section class="py-24 bg-brand-dark px-4 relative">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <h2
+                class="text-4xl md:text-5xl font-bold font-heading text-white mb-6 tracking-tight"
+            >
+                {headline}
+            </h2>
+            <p class="text-lg text-slate-400 font-light">
+                {subline}
+            </p>
+        </div>
+
+        <!-- Grid -->
+        <div class="grid md:grid-cols-3 gap-8">
+            {
+                cards.map((card) => (
+                    <div
+                        class={`group relative p-8 rounded-3xl bg-[#0B1021] border border-white/5 shadow-2xl hover:shadow-[0_0_40px_-10px_rgba(255,88,0,0.1)] transition-all duration-500 flex flex-col overflow-hidden ${card.variant === "highlight" ? "items-center text-center justify-center bg-gradient-to-br from-[#0B1021] to-[#1a1f35]" : ""}`}
+                    >
+                        <!-- Top Gradient Line -->
+                        <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-50"></div>
+                        
+                        <!-- Glow Effect -->
+                        <div class="absolute -top-20 -right-20 w-64 h-64 bg-brand-primary/5 rounded-full blur-3xl pointer-events-none group-hover:bg-brand-primary/10 transition-colors duration-500"></div>
+                        {/* Standard Card Layout */}
+                        {!card.variant && (
+                            <>
+                                <div class="w-12 h-12 rounded-lg bg-brand-dark border border-white/10 flex items-center justify-center mb-6">
+                                    <span class="font-mono text-brand-primary font-bold text-sm">
+                                        {card.badge}
+                                    </span>
+                                </div>
+
+                                <h3 class="text-xl font-bold text-white mb-4">
+                                    {card.title}
+                                </h3>
+                                <p class="text-slate-400 text-sm leading-relaxed mb-8 min-h-[80px]">
+                                    {card.description}
+                                </p>
+
+                                <ul class="space-y-3 mt-auto">
+                                    {card.checklist?.map((item) => (
+                                        <li class="flex items-start gap-3 text-sm text-slate-300">
+                                            <span class="text-brand-primary mt-0.5">
+                                                ✓
+                                            </span>
+                                            <span>{item}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </>
+                        )}
+
+                        {/* Highlight Card Layout */}
+                        {card.variant === "highlight" && (
+                            <>
+                                <h3
+                                    class="text-2xl font-bold text-white mb-6 leading-tight"
+                                    set:html={card.title}
+                                />
+                                <p class="text-slate-400 text-sm leading-relaxed mb-8">
+                                    {card.description}
+                                </p>
+                                <a
+                                    href="#pricing"
+                                    class="font-bold text-white underline decoration-brand-primary hover:text-brand-primary transition-colors"
+                                >
+                                    {card.linkText}
+                                </a>
+                            </>
+                        )}
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</section>

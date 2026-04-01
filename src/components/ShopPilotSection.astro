@@ -1,0 +1,161 @@
+---
+// MultiWorkspaceGrid.astro
+
+interface Props {
+    data?: {
+        headline?: string;
+        imageUrl?: string;
+        features?: {
+            title: string;
+            description: string;
+        }[];
+    };
+}
+
+const { data } = Astro.props;
+
+// Fallbacks mapped exactly to the previous hardcoded content
+const headline =
+    data?.headline ||
+    "Mehrere<br /> Workspaces. Ein<br /> KI Team mit<br /> unterschiedlichen<br /> KI Mitarbeitern.";
+const imageUrl = data?.imageUrl || "/assets/images/workspace.avif";
+const features =
+    data?.features && data.features.length > 0
+        ? data.features
+        : [
+              {
+                  title: "Bis zu 5 Profile",
+                  description:
+                      "Erstelle bis zu 5 Business-Profile, von denen jedes auf deine individuellen Geschäftsanforderungen und spezifischen Ziele zugeschnitten ist – angetrieben von KI-Mitarbeitern, die bereit sind, Ergebnisse zu liefern.",
+              },
+              {
+                  title: "Workspace mit dem Team teilen",
+                  description:
+                      "Arbeite in Echtzeit mit deinem Team zusammen. Teile deinen Workspace, um Geschäftserkenntnisse und Tools für alle Beteiligten sofort zugänglich zu machen.",
+              },
+          ];
+---
+
+<section
+    class="relative bg-black py-32 lg:py-48 flex items-center overflow-hidden min-h-[900px]"
+>
+    <!-- Absolute Image Container strictly bounded to the right side -->
+    <div
+        class="absolute inset-y-0 right-0 w-[55%] lg:w-[50%] z-0 flex items-center pointer-events-none"
+    >
+        <!-- 
+            The image is anchored strictly to the left edge of this right-aligned container.
+            by using left-0 and right overflow, we keep the laptop body clear of the text.
+        -->
+        <img
+            src={imageUrl}
+            alt="Workspace Platform on Laptop"
+            class="absolute left-0 top-[45%] lg:top-[40%] transform -translate-y-1/2 w-[900px] md:w-[1100px] lg:w-[1300px] xl:w-[1500px] max-w-none object-contain"
+        />
+
+        <!-- Only a bottom/top ambient fade, no left fade, exactly as requested -->
+        <div
+            class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent hidden lg:block"
+        >
+        </div>
+        <div
+            class="absolute inset-0 bg-gradient-to-b from-black via-transparent to-transparent hidden lg:block"
+        >
+        </div>
+    </div>
+
+    <!-- Content Container -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 relative z-10 w-full">
+        <!-- Text Group (Left Side overlapping Background) -->
+        <div class="w-full lg:w-[45%] flex flex-col justify-center">
+            <!-- Ghost Button Badge -->
+            <div class="mb-8">
+                <span class="inline-block px-4 py-1.5 rounded-full border border-white/20 text-white text-sm font-medium backdrop-blur-md bg-white/5">
+                    Adbites ShopPilot
+                </span>
+            </div>
+
+            <!-- Main Headline -->
+            <h2
+                class="text-4xl md:text-6xl font-bold text-white leading-[1.1] tracking-tight mb-20"
+                set:html={headline}
+            />
+
+            <!-- Feature Grid (Bottom Left) -->
+            <div
+                class={`grid grid-cols-1 ${features.length > 1 ? "sm:grid-cols-2" : ""} gap-x-12 gap-y-12`}
+            >
+                {
+                    features.map((feature) => (
+                        <div>
+                            <h3 class="text-white font-bold text-lg mb-4">
+                                {feature.title}
+                            </h3>
+                            <p class="text-[#9CA3AF] text-base leading-relaxed font-light">
+                                {feature.description}
+                            </p>
+                        </div>
+                    ))
+                }
+            </div>
+
+            <!-- Integration Icons Row -->
+            <div
+                class="flex flex-wrap items-center gap-4 sm:gap-6 mt-12 pt-8 border-t border-white/10"
+            >
+                <span
+                    class="text-white/50 text-sm font-medium mr-2 w-full sm:w-auto mb-2 sm:mb-0"
+                    >Integriert mit:</span
+                >
+
+                <!-- Website -->
+                <div
+                    class="flex items-center justify-center p-2 rounded-xl hover:bg-white/10 transition-all duration-300"
+                    title="Website"
+                >
+                    <img
+                        src="/assets/images/website.svg"
+                        alt="Website"
+                        class="w-10 h-10 object-contain"
+                    />
+                </div>
+
+                <!-- WhatsApp -->
+                <div
+                    class="flex items-center justify-center p-2 rounded-xl hover:bg-white/10 transition-all duration-300"
+                    title="WhatsApp"
+                >
+                    <img
+                        src="/assets/images/whatsapp.svg"
+                        alt="WhatsApp"
+                        class="w-10 h-10 object-contain"
+                    />
+                </div>
+
+                <!-- Messenger -->
+                <div
+                    class="flex items-center justify-center p-2 rounded-xl hover:bg-white/10 transition-all duration-300"
+                    title="Messenger"
+                >
+                    <img
+                        src="/assets/images/messenger.svg"
+                        alt="Messenger"
+                        class="w-10 h-10 object-contain"
+                    />
+                </div>
+
+                <!-- Telegram -->
+                <div
+                    class="flex items-center justify-center p-2 rounded-xl hover:bg-white/10 transition-all duration-300"
+                    title="Telegram"
+                >
+                    <img
+                        src="/assets/images/telegram.svg"
+                        alt="Telegram"
+                        class="w-10 h-10 object-contain"
+                    />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,124 @@
+---
+interface Props {
+    data: {
+        clientName: string;
+        logo?: string;
+        spotlightHeadline?: string;
+        spotlightDescription?: string;
+        quote?: {
+            text: string;
+            author: string;
+            role: string;
+            image?: string;
+        };
+    };
+}
+
+const { data } = Astro.props;
+---
+
+<section class="py-24 px-6 bg-brand-dark relative overflow-hidden">
+    <div class="max-w-7xl mx-auto relative z-10">
+        <div class="grid lg:grid-cols-12 gap-8 md:gap-16">
+            {/* Left Column: Headline & Description */}
+            <div class="lg:col-span-6">
+                {/* Badge & Logo */}
+                <div class="flex items-center gap-4 mb-8">
+                    <span
+                        class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-brand-primary text-sm font-bold"
+                    >
+                        <span
+                            class="w-2 h-2 rounded-full bg-brand-primary animate-pulse"
+                        ></span>
+                        Case Study Highlight
+                    </span>
+                    {
+                        data.logo && (
+                            <img
+                                src={data.logo}
+                                alt={data.clientName}
+                                class="h-8 w-auto opacity-80"
+                            />
+                        )
+                    }
+                </div>
+
+                <h2
+                    class="text-3xl md:text-5xl font-bold text-white mb-8 leading-[1.1]"
+                >
+                    {
+                        data.spotlightHeadline ||
+                            `Wie ${data.clientName} durch gezielte Strategie neues Wachstum freigesetzt hat.`
+                    }
+                </h2>
+
+                <div class="space-y-8">
+                    <p
+                        class="text-lg text-gray-400 leading-relaxed border-l-2 border-brand-primary pl-6"
+                    >
+                        {data.spotlightDescription}
+                    </p>
+                </div>
+            </div>
+
+            {/* Right Column: Quote Card */}
+            <div class="lg:pt-20 lg:col-span-5 lg:col-start-8">
+                <div
+                    class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 md:p-12 rounded-3xl relative group hover:border-brand-primary/30 transition-colors"
+                >
+                    {/* Decorative Quote Icon */}
+                    <div
+                        class="absolute -top-6 -left-6 text-6xl text-brand-primary opacity-20 font-serif"
+                    >
+                        “
+                    </div>
+
+                    <blockquote
+                        class="text-xl md:text-2xl font-medium text-white leading-relaxed mb-8 relative z-10"
+                    >
+                        "{
+                            data.quote?.text ||
+                                "Wir sind begeistert von den Ergebnissen."
+                        }"
+                    </blockquote>
+
+                    <div
+                        class="flex items-center gap-4 border-t border-white/10 pt-6"
+                    >
+                        <div
+                            class="w-12 h-12 rounded-full overflow-hidden bg-white/10 border border-white/20"
+                        >
+                            {
+                                data.quote?.image ? (
+                                    <img
+                                        src={data.quote.image}
+                                        alt={data.quote.author}
+                                        class="w-full h-full object-cover"
+                                    />
+                                ) : (
+                                    <div class="w-full h-full flex items-center justify-center text-xl">
+                                        👤
+                                    </div>
+                                )
+                            }
+                        </div>
+                        <div>
+                            <div class="text-white font-bold">
+                                {data.quote?.author || "Happy Client"}
+                            </div>
+                            <div class="text-brand-primary text-sm">
+                                {data.quote?.role || "CEO"}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Hover Glow */}
+                    <div
+                        class="absolute bottom-0 right-0 w-64 h-64 bg-brand-primary/10 blur-[80px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+                    >
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

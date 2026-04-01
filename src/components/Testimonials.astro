@@ -1,0 +1,133 @@
+---
+interface Props {
+  data?: {
+    headline?: string;
+    subline?: string;
+    testimonials?: Array<{
+      company?: string;
+      accentColor?: string;
+      rating?: string;
+      text?: string;
+      author?: string;
+      role?: string;
+      rotation?: string;
+    }>;
+  };
+}
+
+const { data } = Astro.props;
+
+// Fallback Data
+const headline = data?.headline || "Zufriedene Händler";
+const subline =
+  data?.subline ||
+  "Wir helfen Retailern dabei, durch intelligente Marketing-Lösungen zu wachsen.";
+
+const defaultTestimonials = [
+  {
+    company: "Schwarzwaldkind",
+    accentColor: "text-emerald-400",
+    rating: "4.9",
+    text: "Ich kann Adbites nur wärmstens empfehlen! Der Service ist fachlich extrem kompetent und hat uns mit seiner beeindruckenden Leistungsstärke absolut überzeugt.",
+    author: "Volker Hornbacher",
+    role: "Geschäftsführer @ Schwarzwaldkind Binzen",
+    rotation: "-rotate-2",
+  },
+  {
+    company: "TernX",
+    accentColor: "text-blue-400",
+    rating: "4.8",
+    text: "Besser als jede Agentur. Endlich ein Service, der Retail versteht. Die Content-Produktion ist super schnell und die Qualität stimmt einfach.",
+    author: "Felix Krüger",
+    role: "Gründer @ TernX",
+  },
+  {
+    company: "Das ganze Leben",
+    accentColor: "text-purple-400",
+    rating: "4.9",
+    text: "Die Kombination aus KI-Tools und persönlicher Beratung ist genau das, was wir gesucht haben. Klare Empfehlung!",
+    author: "Lorenz Sternbach",
+    role: "Geschäftsführer @ Das ganze Leben",
+  },
+  {
+    company: "Tomwood AG",
+    accentColor: "text-orange-500",
+    rating: "5.0",
+    text: "Wir arbeiten seit Jahren erfolgreich mit Adbites zusammen. Vielen Dank für die professionelle und sympathische Zusammenarbeit.",
+    author: "Daniel Steiner",
+    role: "Geschäftsleitung @ Tomwood AG",
+  },
+  {
+    company: "HolzLand",
+    accentColor: "text-red-500",
+    rating: "4.7",
+    text: "Ihr fundiertes Wissen über die neuesten Trends und Best Practices hat uns geholfen, unsere Präsenz auf den verschiedenen Plattformen zu verbessern und unsere Zielgruppe effektiv anzusprechen.",
+    author: "Christiane Bergmann",
+    role: "Product Manager @ HolzLand",
+  },
+  {
+    company: "Mobexo",
+    accentColor: "text-indigo-500",
+    rating: "4.9",
+    text: "Seit vielen Jahren arbeiten wir mit Adbites zusammen. Wir erzielen perfekte Ergebnisse und sind sehr zufrieden.",
+    author: "Thorsten Podlech",
+    role: "CTO @ Mobexo",
+  },
+];
+
+const testimonials = data?.testimonials || defaultTestimonials;
+---
+
+<section class="py-24 bg-[#0d0101] px-4 relative">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <h2
+        class="text-4xl md:text-5xl font-bold font-heading text-white mb-6 tracking-tight"
+      >
+        {headline}
+      </h2>
+      <p class="text-lg text-slate-400 font-light">
+        {subline}
+      </p>
+    </div>
+
+    <!-- Grid -->
+    <div class="grid md:grid-cols-3 gap-8">
+      {
+        testimonials.map((item) => (
+          <div class={`p-8 rounded-3xl bg-[#0B1021] border border-white/5 relative group hover:border-white/10 transition-all duration-500 hover:scale-105 hover:shadow-[0_0_40px_-10px_rgba(255,88,0,0.1)] hover:z-10 flex flex-col overflow-hidden ${item.rotation || ""}`}>
+             {/* Force Tailwind to generate these classes: bg-emerald-400 bg-blue-400 bg-purple-400 bg-orange-500 bg-red-500 bg-indigo-500 */}
+             <!-- Top Gradient Line -->
+            <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-50"></div>
+            
+             <!-- Glow Effect -->
+            <div class={`absolute -top-20 -right-20 w-64 h-64 opacity-10 group-hover:opacity-20 rounded-full blur-3xl pointer-events-none transition-opacity duration-500 ${item.accentColor ? item.accentColor.replace('text-', 'bg-') : 'bg-white'}`}></div>
+
+            <!-- Header: Company & Rating -->
+            <div class="flex justify-between items-center mb-6 relative z-10">
+              <h3 class={`text-xl font-bold ${item.accentColor || "text-white"}`}>
+                {item.company}
+              </h3>
+              <div class="flex items-center gap-1 bg-white/5 px-2 py-1 rounded-md border border-white/5">
+                <span class="text-white font-bold text-sm">{item.rating}</span>
+                <span class="text-orange-500 text-xs">★</span>
+              </div>
+            </div>
+
+            <!-- Quote Text -->
+            <p class="text-slate-300 leading-relaxed mb-8 italic opacity-90 min-h-[100px] relative z-10">
+              "{item.text}"
+            </p>
+
+            <!-- Author -->
+            <div class="mt-auto relative z-10">
+              <p class="font-bold text-white text-sm">{item.author}</p>
+              <p class="text-slate-500 text-xs">{item.role}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

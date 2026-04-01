@@ -1,0 +1,15 @@
+---
+import SocialProofCards from "./SocialProofCards.jsx";
+---
+
+<section class="py-12 bg-[#0d0101] relative z-10 overflow-visible">
+    <!-- Background Glow -->
+    <div
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[600px] bg-orange-500/15 blur-[100px] rounded-full pointer-events-none"
+    >
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <SocialProofCards client:visible />
+    </div>
+</section>

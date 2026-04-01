@@ -1,0 +1,118 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/Navbar.astro";
+import { sanityClient } from "../../lib/sanity";
+import ProductHero from "../../components/product/ProductHero.astro";
+import Intro from "../../components/Intro.astro";
+import Logos from "../../components/Logos.astro";
+import ProductFeatures from "../../components/product/ProductFeatures.astro";
+import VisualSection from "../../components/product/VisualSection.astro";
+import CasesSection from "../../components/CasesSection.astro";
+import DynamicFaq from "../../components/product/DynamicFaq.astro";
+import ProductCTA from "../../components/product/ProductCTA.astro";
+
+// Pre-render pages matching registered products in Sanity
+export async function getStaticPaths() {
+    const slugs = await sanityClient.fetch(`*[_type == "product" && defined(slug.current)][].slug.current`);
+    return slugs.map((slug: string) => ({
+        params: { slug },
+    }));
+}
+
+const { slug } = Astro.params;
+
+const query = `*[_type == "product" && slug.current == $slug][0] {
+  title,
+  "slug": slug.current,
+  seo,
+  heroSection {
+    headline, subline, "image": image.asset->url, primaryButtonText, primaryButtonUrl,
+    "trustLogos": trustLogos[].asset->url
+  },
+  introSection {
+    headline, subline
+  },
+  logos[] {
+    name, "imageUrl": image.asset->url, textMarkup, customClass
+  },
+  featureSections[] {
+    badge, headline, text, "image": image.asset->url, buttonText, buttonUrl
+  },
+  visualSection {
+    designType,
+    socialFanOutData {
+      headline,
+      subline,
+      "centerPhoneImage": centerPhoneImage.asset->url,
+      "fanCards": fanCards[].asset->url
+    }
+  },
+  casesSection {
+    headline, subline,
+    cases[]->{
+      clientName, "image": projectImage.asset->url, challenge, solution
+    }
+  },
+  faqSection {
+    headline, sublines, faqs[] { question, answer }
+  },
+  ctaSection {
+    headline, description, buttonText, buttonUrl, trustText
+  }
+}`;
+
+let product;
+try {
+    product = await sanityClient.fetch(query, { slug });
+} catch (e) {
+    console.error("Error fetching product data:", e);
+}
+
+if (!product) {
+    return Astro.redirect("/404");
+}
+
+const title = product.seo?.metaTitle || `${product.title} | Adbites`;
+const description = product.seo?.metaDescription || product.heroSection?.subline || "Adbites Product";
+---
+
+<Layout title={title}>
+    <meta slot="head" name="description" content={description} />
+    <Navbar />
+    
+    <main class="bg-[#0d0101] min-h-screen text-slate-100">
+        <!-- 1. Hero Section -->
+        {product.heroSection && <ProductHero data={product.heroSection} />}
+        
+        <!-- 2. Marquee Logos (Fallback to default if empty) -->
+        <Logos data={product.logos} />
+        
+        <!-- 3. Intro Section -->
+        {product.introSection && <Intro data={product.introSection} />}
+        
+        <!-- 4. Flexible Feature Sections -->
+        {product.featureSections && product.featureSections.length > 0 && <ProductFeatures features={product.featureSections} />}
+        
+        <!-- 4.5 Dynamic Visual Section Setup -->
+        {product.visualSection && <VisualSection data={product.visualSection} />}
+        
+        <!-- 5. Cases Section (Re-used) -->
+        {product.casesSection && product.casesSection.cases?.length > 0 && <CasesSection data={product.casesSection} />}
+        
+        <!-- 6. FAQ Section (Dynamic version) -->
+        {product.faqSection && product.faqSection.faqs?.length > 0 && <DynamicFaq data={product.faqSection} />}
+        
+        <!-- 7. CTA Section -->
+        {product.ctaSection && (
+            <ProductCTA 
+                headline={product.ctaSection.headline || "Bereit für den nächsten Schritt?"}
+                description={product.ctaSection.description || "Lassen Sie uns gemeinsam durchstarten."}
+                button={{ 
+                    text: product.ctaSection.buttonText || "Jetzt Kontakt aufnehmen", 
+                    url: product.ctaSection.buttonUrl || "#" 
+                }}
+                trustText={product.ctaSection.trustText || "Dem Einzelhandel verpflichtet."}
+            />
+        )}
+    </main>
+</Layout>

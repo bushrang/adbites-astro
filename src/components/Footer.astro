@@ -1,0 +1,161 @@
+---
+import { sanityClient } from "sanity:client";
+import { GROQ_ORGANIZATION } from "../lib/sanityQueries";
+
+const organization = await sanityClient.fetch(GROQ_ORGANIZATION);
+const currentYear = new Date().getFullYear();
+
+const { name, contactPoints, sameAs } = organization || {};
+const email =
+    contactPoints?.find((cp: any) => cp.contactType === "Email")?.email ||
+    "hello@adbites.com";
+---
+
+<footer
+    class="bg-[#0d0101] border-t border-white/5 pt-16 pb-8 relative overflow-hidden"
+>
+    <!-- Glow Effect -->
+    <div
+        class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-brand-primary/5 rounded-full blur-[120px] pointer-events-none"
+    >
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+        <div
+            class="flex flex-col md:flex-row justify-between items-start gap-12 mb-16"
+        >
+            <!-- Brand -->
+            <div class="max-w-xs">
+                <div class="flex items-center gap-2 mb-6">
+                    <img
+                        src="/assets/images/adbites_logo_white.png"
+                        alt="Adbites Logo"
+                        class="h-8 w-auto"
+                    />
+                </div>
+                <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                    {
+                        organization?.description ||
+                            "Wir helfen dem stationären Einzelhandel, im digitalen Zeitalter nicht nur zu überleben, sondern zu dominieren."
+                    }
+                </p>
+                <div class="flex gap-4">
+                    {
+                        sameAs?.map((url: string) => {
+                            // Simple icon logic based on URL content
+                            let label = "Social";
+                            if (url.includes("linkedin")) label = "LinkedIn";
+                            if (url.includes("instagram")) label = "Instagram";
+                            if (url.includes("facebook")) label = "Facebook";
+
+                            return (
+                                <a
+                                    href={url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="text-slate-400 hover:text-white transition-colors text-sm font-medium border-b border-white/10 hover:border-brand-primary pb-0.5"
+                                >
+                                    {label}
+                                </a>
+                            );
+                        })
+                    }
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div
+                class="grid grid-cols-2 md:grid-cols-3 gap-8 md:gap-16 w-full md:w-auto"
+            >
+                <div>
+                    <h4 class="text-white font-bold mb-6">Agentur</h4>
+                    <ul class="space-y-4 text-sm text-slate-400">
+                        <li>
+                            <a
+                                href="#about"
+                                class="hover:text-brand-primary transition-colors"
+                                >Über Uns</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="#services"
+                                class="hover:text-brand-primary transition-colors"
+                                >Produkte</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="#cases"
+                                class="hover:text-brand-primary transition-colors"
+                                >Referenzen</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="#contact"
+                                class="hover:text-brand-primary transition-colors"
+                                >Kontakt</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-6">Kontakt</h4>
+                    <ul class="space-y-4 text-sm text-slate-400">
+                        {
+                            organization?.address && (
+                                <li>
+                                    {organization.address.streetAddress}
+                                    <br />
+                                    {organization.address.postalCode}{" "}
+                                    {organization.address.addressLocality}
+                                    <br />
+                                    {organization.address.addressCountry}
+                                </li>
+                            )
+                        }
+                        {
+                            email && (
+                                <li>
+                                    <a
+                                        href={`mailto:${email}`}
+                                        class="text-brand-primary hover:text-white transition-colors"
+                                    >
+                                        {email}
+                                    </a>
+                                </li>
+                            )
+                        }
+                        <li>
+                            <a
+                                href="/impressum"
+                                class="hover:text-brand-primary transition-colors"
+                                >Impressum</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="/datenschutz"
+                                class="hover:text-brand-primary transition-colors"
+                                >Datenschutz</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div
+            class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500"
+        >
+            <p>
+                &copy; {currentYear}
+                {name || "Adbites Astro"}. All rights reserved.
+            </p>
+            <p>
+                Designed with <span class="text-brand-primary">♥</span> in Germany.
+            </p>
+        </div>
+    </div>
+</footer>

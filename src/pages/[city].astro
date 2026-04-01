@@ -1,0 +1,121 @@
+---
+import Layout from "../layouts/Layout.astro";
+import JsonLd from "../components/JsonLd.astro";
+import { sanityClient } from "../lib/sanity";
+import { GROQ_LOCATIONS, GROQ_LOCATION_BY_SLUG } from "../lib/sanityQueries";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+    const locations = await sanityClient.fetch(GROQ_LOCATIONS);
+
+    return locations.map((loc: any) => ({
+        params: { city: loc.slug },
+        props: { name: loc.name },
+    }));
+}
+
+const { city } = Astro.params;
+const location = await sanityClient.fetch(GROQ_LOCATION_BY_SLUG, {
+    slug: city,
+});
+
+if (!location) {
+    return Astro.redirect("/404");
+}
+
+// Prepare Schema.org Data (GEO)
+const schema = {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    name: `Adbites Astro ${location.name}`,
+    description: `Generative Engine Optimization (GEO) & SEO Services in ${location.name}.`,
+    areaServed: {
+        "@type": "City",
+        name: location.name,
+        postalCode: location.zip,
+    },
+    knowsAbout: ["SEO", "GEO", "AI Search", "Generative AI"],
+};
+---
+
+<Layout title={`Adbites ${location.name} | GEO & SEO Agentur`}>
+    <main
+        class="min-h-screen bg-black text-white selection:bg-brand-primary selection:text-black"
+    >
+        <div class="max-w-4xl mx-auto px-4 py-24">
+            <!-- Header -->
+            <div class="mb-16 border-b border-gray-800 pb-12">
+                <span
+                    class="text-brand-primary font-mono text-xs uppercase tracking-[0.2em] mb-4 block"
+                >
+                    Location Protocol
+                </span>
+                <h1
+                    class="text-6xl md:text-8xl font-bold tracking-tighter mb-6"
+                >
+                    {location.name}
+                </h1>
+                <p class="text-2xl text-gray-400 max-w-2xl">
+                    Strategic Operating Base: <span class="text-white font-mono"
+                        >{location.zip}</span
+                    >
+                </p>
+            </div>
+
+            <!-- GEO Context Analysis (AI Data) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                    <h2
+                        class="text-xl font-bold text-white mb-6 flex items-center gap-2"
+                    >
+                        <span class="w-2 h-2 bg-brand-primary rounded-full"
+                        ></span>
+                        Strategic Context
+                    </h2>
+                    <div
+                        class="prose prose-invert prose-p:text-gray-400 prose-p:leading-relaxed"
+                    >
+                        <p>
+                            {
+                                location.context ||
+                                    "Analyzing local market dynamics for Generative Engine Opportunities."
+                            }
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Competitor Radar -->
+                <div
+                    class="bg-gray-900/30 border border-gray-800 p-8 rounded-lg"
+                >
+                    <h2
+                        class="text-sm font-mono text-gray-500 uppercase tracking-wider mb-6"
+                    >
+                        Detected Competitors
+                    </h2>
+                    {
+                        location.competitors &&
+                        location.competitors.length > 0 ? (
+                            <ul class="space-y-4">
+                                {location.competitors.map((comp: string) => (
+                                    <li class="flex items-center gap-4 text-gray-300">
+                                        <span class="w-1.5 h-1.5 bg-red-500/50 rounded-full" />
+                                        {comp}
+                                    </li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <p class="text-gray-600 italic">
+                                No signal detected in this sector.
+                            </p>
+                        )
+                    }
+                </div>
+            </div>
+
+            <!-- Schema Injection -->
+            <JsonLd schema={schema} />
+        </div>
+    </main>
+</Layout>
