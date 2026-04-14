@@ -1,8 +1,10 @@
 ---
+import { PortableText } from "astro-portabletext";
+
 interface Feature {
     badge?: string;
     headline?: string;
-    text?: string;
+    text?: any;
     image?: string;
     buttonText?: string;
     buttonUrl?: string;
@@ -26,12 +28,16 @@ const { features = [] } = Astro.props;
                           {feature.badge}
                       </span>
                   )}
-                  <h3 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-white leading-tight">
+                  <h3 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-white leading-[1.1]">
                       {feature.headline}
                   </h3>
-                  <p class="text-lg text-slate-400 leading-relaxed max-w-lg">
-                      {feature.text}
-                  </p>
+                  <div class="prose prose-invert prose-p:text-lg prose-p:text-slate-400 prose-p:leading-relaxed prose-a:text-brand-primary max-w-lg mb-6">
+                      {typeof feature.text === 'string' ? (
+                          <p>{feature.text}</p>
+                      ) : (
+                          feature.text && <PortableText value={feature.text} />
+                      )}
+                  </div>
                   
                   {feature.buttonText && feature.buttonUrl && (
                       <div class="pt-4">

@@ -9,16 +9,54 @@ interface Props {
 const { headline, description, button, trustText } = Astro.props;
 ---
 
-<section class="py-32 bg-brand-primary px-4 relative overflow-hidden z-20">
-    <!-- Pattern Background overlay -->
+<section class="py-32 bg-[#0d0101] px-4 relative overflow-hidden z-20">
+    <!-- God Rays Background -->
+    <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-full min-w-[1200px] max-w-[1600px] h-[600px] pointer-events-none flex justify-center items-end mix-blend-screen z-0 overflow-hidden">
+        <!-- Base Glow -->
+        <div class="absolute bottom-[-150px] w-[800px] h-[300px] bg-brand-primary/30 blur-[120px] rounded-[100%]"></div>
+        
+        <!-- SVG God Rays -->
+        <svg viewBox="0 0 1000 500" preserveAspectRatio="none" class="absolute bottom-0 w-full h-[600px] opacity-70 origin-bottom ray-animation">
+            <defs>
+                <linearGradient id="rayGrad1" x1="0" y1="1" x2="0" y2="0">
+                    <stop offset="0%" stop-color="#FF6B00" stop-opacity="0.8" />
+                    <stop offset="80%" stop-color="#FF6B00" stop-opacity="0" />
+                </linearGradient>
+                <linearGradient id="rayGrad2" x1="0" y1="1" x2="0" y2="0">
+                    <stop offset="0%" stop-color="#EF5350" stop-opacity="0.6" />
+                    <stop offset="70%" stop-color="#EF5350" stop-opacity="0" />
+                </linearGradient>
+                <filter id="blurRays" x="-20%" y="-20%" width="140%" height="140%">
+                    <feGaussianBlur stdDeviation="8" />
+                </filter>
+            </defs>
+            <g filter="url(#blurRays)">
+                <!-- Left Rays -->
+                <polygon points="500,550 -100,0 50,0" fill="url(#rayGrad1)" class="ray-shape r1" />
+                <polygon points="500,550 150,0 200,0" fill="url(#rayGrad2)" class="ray-shape r2" />
+                <polygon points="500,550 250,0 350,0" fill="url(#rayGrad1)" class="ray-shape r3" />
+                
+                <!-- Center Rays -->
+                <polygon points="500,550 400,0 480,0" fill="url(#rayGrad2)" class="ray-shape r4" />
+                <polygon points="500,550 520,0 600,0" fill="url(#rayGrad1)" class="ray-shape r5" />
+                
+                <!-- Right Rays -->
+                <polygon points="500,550 650,0 750,0" fill="url(#rayGrad2)" class="ray-shape r6" />
+                <polygon points="500,550 800,0 850,0" fill="url(#rayGrad1)" class="ray-shape r7" />
+                <polygon points="500,550 950,0 1100,0" fill="url(#rayGrad2)" class="ray-shape r8" />
+            </g>
+        </svg>
+    </div>
+
+    <!-- Noise / Pattern overlay -->
     <div
-        class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1.5px,transparent_1.5px)] [background-size:24px_24px]"
+        class="absolute inset-0 opacity-5 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:32px_32px] mix-blend-overlay z-0"
     >
     </div>
 
     <div class="max-w-4xl mx-auto text-center relative z-10">
         <h2
-            class="text-4xl md:text-6xl font-heading font-bold text-white mb-8 tracking-tight"
+            class="text-4xl md:text-6xl font-heading font-bold text-white mb-8 leading-[1.1] tracking-tight"
         >
             {headline}
         </h2>
@@ -30,26 +68,29 @@ const { headline, description, button, trustText } = Astro.props;
 
         <a
             href={button.url}
-            class="inline-flex justify-center items-center px-10 py-5 rounded-full bg-white text-brand-primary font-bold hover:bg-slate-100 transition-transform hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/20 duration-300 text-xl mb-8 group"
+            class="inline-flex justify-center items-center px-10 py-5 rounded-full bg-brand-primary text-white font-bold hover:bg-brand-accent transition-transform hover:-translate-y-1 hover:shadow-[0_10px_40px_rgba(255,107,0,0.4)] duration-300 text-xl mb-8 group relative overflow-hidden"
         >
-            {button.text}
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="2"
-                stroke="currentColor"
-                class="w-6 h-6 ml-2 group-hover:translate-x-1 transition-transform"
-            >
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"></path>
-            </svg>
+            <span class="relative z-10 flex items-center">
+                {button.text}
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="2.5"
+                    stroke="currentColor"
+                    class="w-6 h-6 ml-2 group-hover:translate-x-1 transition-transform"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"></path>
+                </svg>
+            </span>
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-[200%] group-hover:animate-[shimmer_1.5s_infinite]"></div>
         </a>
 
         <div
-            class="flex items-center justify-center gap-2 text-white/80 font-medium text-lg"
+            class="flex items-center justify-center gap-2 text-slate-400 font-medium text-lg mt-4"
         >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -66,3 +107,38 @@ const { headline, description, button, trustText } = Astro.props;
         </div>
     </div>
 </section>
+
+<style>
+    /* Global ray container swaying noticeably */
+    @keyframes sway {
+        0% { transform: rotate(-5deg) scale(1.05); }
+        100% { transform: rotate(5deg) scale(1.15); }
+    }
+    .ray-animation {
+        animation: sway 6s ease-in-out infinite alternate;
+        transform-origin: bottom center;
+    }
+
+    /* Individual rays pulsing intensely */
+    @keyframes pulseRay {
+        0% { opacity: 0.1; transform: scale(0.95); }
+        100% { opacity: 1; transform: scale(1.15); }
+    }
+    .ray-shape {
+        transform-origin: 500px 500px;
+        animation: pulseRay 3s ease-in-out infinite alternate;
+    }
+    
+    .r1 { animation-delay: 0s; }
+    .r2 { animation-delay: -0.7s; animation-duration: 4s; }
+    .r3 { animation-delay: -1.5s; animation-duration: 2.5s; }
+    .r4 { animation-delay: -0.5s; animation-duration: 3.2s; }
+    .r5 { animation-delay: -2s; animation-duration: 4.5s; }
+    .r6 { animation-delay: -1s; animation-duration: 2.8s; }
+    .r7 { animation-delay: -1.8s; animation-duration: 5s; }
+    .r8 { animation-delay: -0.2s; animation-duration: 2.5s; }
+
+    @keyframes shimmer {
+        100% { transform: translateX(100%); }
+    }
+</style>

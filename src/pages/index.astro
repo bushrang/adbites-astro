@@ -1,6 +1,5 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Navbar from "../components/Navbar.astro";
 import Hero from "../components/Hero.astro";
 import Intro from "../components/Intro.astro";
 import ServicesImage from "../components/ServicesImage.astro";
@@ -65,7 +64,6 @@ if (homepageData) {
 	title={homepageData?.seo?.metaTitle ||
 		"Adbites Astro | SEO & GEO Technology Agency"}
 >
-	<Navbar />
 	<Hero data={homepageData} />
 	<Logos data={homepageData?.logos} />
 	<Intro data={homepageData?.introSection} />

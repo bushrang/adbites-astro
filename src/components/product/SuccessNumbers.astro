@@ -1,0 +1,69 @@
+---
+// src/components/product/SuccessNumbers.astro
+export interface Props {
+    title?: string;
+    metrics?: {
+        topLabel: string;
+        value: string;
+        bottomLabel: string;
+    }[];
+    mascotImgSrc?: string;
+}
+
+const {
+    title = "Adbites erstellt hochkonvertierende KI Avatare. Jetzt bringen sie dein Business aufs nächste Level.",
+    metrics = [
+        { topLabel: "Mehr als", value: "100+", bottomLabel: "Videos erstellt" },
+        { topLabel: "Verfügbar", value: "24/7", bottomLabel: "rund um die Uhr" },
+        { topLabel: "Mehr als", value: "4,2 Mio. €", bottomLabel: "Werbebudget verwaltet" },
+        { topLabel: "Über", value: "85%", bottomLabel: "Abschlussrate" },
+    ],
+    mascotImgSrc = "/success-mascot.png"
+} = Astro.props;
+---
+
+<section class="py-16 px-6 relative overflow-hidden">
+    <div class="max-w-6xl w-full mx-auto relative">
+        {/* Glow Effects */}
+        <div class="absolute -top-32 -right-32 w-96 h-96 bg-brand-primary/20 blur-[100px] rounded-full pointer-events-none z-0"></div>
+        <div class="absolute -bottom-32 -left-32 w-96 h-96 bg-brand-primary/10 blur-[100px] rounded-full pointer-events-none z-0"></div>
+
+        <div class="relative z-10 flex flex-col lg:flex-row items-center gap-12">
+            
+            {/* Left Content Area */}
+            <div class="w-full lg:w-2/3 flex flex-col gap-12">
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-white leading-[1.1]">
+                    {title}
+                </h2>
+
+                <div class="grid grid-cols-2 gap-8 md:gap-12">
+                    {metrics.map((metric) => (
+                        <div class="flex flex-col gap-1">
+                            <span class="text-sm md:text-base text-gray-400 font-medium">
+                                {metric.topLabel}
+                            </span>
+                            <span class="text-4xl md:text-5xl font-bold font-heading text-white">
+                                {metric.value}
+                            </span>
+                            <span class="text-sm md:text-base text-gray-400 font-medium">
+                                {metric.bottomLabel}
+                            </span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Right Mascot Area */}
+            <div class="w-full lg:w-1/3 flex justify-center lg:justify-end items-center">
+                <div class="relative w-64 h-64 md:w-80 md:h-80 lg:w-full lg:max-w-md lg:h-auto aspect-square">
+                    <img
+                        src={mascotImgSrc}
+                        alt="3D Astronaut Mascot"
+                        class="w-full h-full object-contain rounded-2xl filter drop-shadow-[0_20px_50px_rgba(255,107,0,0.3)] hover:scale-105 transition-transform duration-500"
+                    />
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

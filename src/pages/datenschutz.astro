@@ -1,0 +1,49 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { sanityClient } from "../lib/sanity";
+import { GROQ_ORGANIZATION, GROQ_LEGAL_PAGE_BY_SLUG } from "../lib/sanityQueries";
+import { PortableText } from "astro-portabletext";
+
+const organization = await sanityClient.fetch(GROQ_ORGANIZATION);
+const pageData = await sanityClient.fetch(GROQ_LEGAL_PAGE_BY_SLUG, { slug: "datenschutz" });
+---
+
+<Layout title={`${pageData?.title || "Datenschutzerklärung"} | Adbites`}>
+    <main class="bg-[#0d0101] min-h-screen text-slate-100 pt-32 pb-24 px-6">
+        <div class="max-w-3xl mx-auto prose prose-invert prose-lg prose-headings:font-bold prose-headings:text-white prose-a:text-brand-primary hover:prose-a:text-brand-accent prose-p:text-gray-300">
+            <h1>{pageData?.title || "Datenschutzerklärung"}</h1>
+            
+            {pageData?.content ? (
+                <PortableText value={pageData.content} />
+            ) : (
+                <>
+                    <div class="mb-8 p-4 bg-yellow-500/10 border border-yellow-500/30 text-yellow-500 rounded-lg text-sm font-medium">
+                        Info: Diese Seite zeigt aktuell einen Platzhalter. Erstelle eine Seite vom Typ "Legal Pages" mit dem Slug "datenschutz" im Sanity Studio, um diese Texte dauerhaft zu überschreiben.
+                    </div>
+                    <h2>1. Datenschutz auf einen Blick</h2>
+            <h3>Allgemeine Hinweise</h3>
+            <p>
+                Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können. Ausführliche Informationen zum Thema Datenschutz entnehmen Sie unserer unter diesem Text aufgeführten Datenschutzerklärung.
+            </p>
+            
+            <h3>Datenerfassung auf dieser Website</h3>
+            <p><strong>Wer ist verantwortlich für die Datenerfassung auf dieser Website?</strong></p>
+            <p>
+                Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber. Dessen Kontaktdaten können Sie dem Impressum dieser Website entnehmen.
+            </p>
+            
+            <p><strong>Wie erfassen wir Ihre Daten?</strong></p>
+            <p>
+                Ihre Daten werden zum einen dadurch erhoben, dass Sie uns diese mitteilen. Hierbei kann es sich z. B. um Daten handeln, die Sie in ein Kontaktformular eingeben. Andere Daten werden automatisch oder nach Ihrer Einwilligung beim Besuch der Website durch unsere IT-Systeme erfasst. Das sind vor allem technische Daten (z. B. Internetbrowser, Betriebssystem oder Uhrzeit des Seitenaufrufs).
+            </p>
+
+            <div class="mt-12 p-6 bg-white/5 border border-brand-primary/30 rounded-lg">
+                <p class="text-sm text-brand-primary m-0">
+                    <strong>Hinweis:</strong> Dies ist eine Platzhalter-Datenschutzerklärung. Bitte ersetzen Sie diesen Text durch Ihren rechtssicheren Datenschutztext (z.B. erstellt über eRecht24 oder von Ihrem Anwalt).
+                </p>
+            </div>
+                </>
+            )}
+        </div>
+    </main>
+</Layout>

@@ -75,7 +75,7 @@ export default {
                     fields: [
                         { name: 'badge', title: 'Badge / Eyecatcher', type: 'string' },
                         { name: 'headline', title: 'Feature Headline', type: 'string' },
-                        { name: 'text', title: 'Feature Description Text', type: 'array', of: [{ type: 'block' }] },
+                        { name: 'text', title: 'Feature Description Text', type: 'text', rows: 4 },
                         { name: 'image', title: 'Feature Image / Graphic', type: 'image', options: { hotspot: true } },
                         { name: 'buttonText', title: 'Optional Button Text', type: 'string' },
                         { name: 'buttonUrl', title: 'Optional Button URL', type: 'string' },
@@ -124,32 +124,6 @@ export default {
                     ],
                     options: { collapsible: true, collapsed: false }
                 }
-            ],
-            options: { collapsible: true, collapsed: true }
-        },
-        {
-            name: 'successNumbersSection',
-            title: 'Success Numbers Section',
-            type: 'object',
-            fields: [
-                { name: 'title', title: 'Headline', type: 'string' },
-                {
-                    name: 'metrics',
-                    title: 'Metrics Array (Max 4)',
-                    type: 'array',
-                    of: [
-                        {
-                            type: 'object',
-                            fields: [
-                                { name: 'topLabel', title: 'Top Label', type: 'string' },
-                                { name: 'value', title: 'Big Value', type: 'string' },
-                                { name: 'bottomLabel', title: 'Bottom Label', type: 'string' }
-                            ]
-                        }
-                    ],
-                    validation: (Rule: any) => Rule.max(4)
-                },
-                { name: 'mascotImage', title: 'Mascot Image', type: 'image', options: { hotspot: true } }
             ],
             options: { collapsible: true, collapsed: true }
         },

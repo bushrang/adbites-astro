@@ -9,6 +9,7 @@ import blockContent from './blockContent';
 import post from './post';
 import category from './category';
 import product from './product';
+import legalPage from './legalPage';
 
 export const schemaTypes = [
     // Singletons
@@ -23,6 +24,7 @@ export const schemaTypes = [
     post,
     category,
     product,
+    legalPage,
     // Objects
     blockContent,
 ];

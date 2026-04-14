@@ -16,7 +16,7 @@ export default function SocialFanOut({ data }) {
             {/* Header */}
             {(headline || subline) && (
                 <div className="max-w-3xl mx-auto px-4 text-center relative z-20 mb-20">
-                    {headline && <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white mb-6 leading-[1.1] drop-shadow-2xl" dangerouslySetInnerHTML={{ __html: headline.replace(/\n/g, "<br/>") }} />}
+                    {headline && <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white mb-6 leading-tight drop-shadow-2xl" dangerouslySetInnerHTML={{ __html: headline.replace(/\n/g, "<br/>") }} />}
                     {subline && <p className="text-xl text-slate-300 leading-relaxed font-light">{subline}</p>}
                 </div>
             )}

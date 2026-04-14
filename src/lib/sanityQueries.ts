@@ -11,6 +11,11 @@ export const GROQ_LOCATION_BY_SLUG = `*[_type == "location" && slug.current == $
   "slug": slug.current
 }`;
 
+export const GROQ_LEGAL_PAGE_BY_SLUG = `*[_type == "legalPage" && slug.current == $slug][0] {
+  title,
+  content
+}`;
+
 export const GROQ_ALL_SERVICE_SLUGS = `*[_type == "service" && defined(slug.current)][].slug.current`;
 
 export const GROQ_SERVICE_BY_SLUG = `*[_type == "service" && slug.current == $slug][0] {

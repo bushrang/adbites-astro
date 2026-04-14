@@ -1,0 +1,236 @@
+---
+// AdbitesAdLift.astro
+
+interface Props {
+    data?: {
+        headline?: string;
+        subline?: string;
+        cards?: {
+            src: string;
+            alt?: string;
+            targetClass?: string;
+            badgeText?: string;
+            badgeColor?: string;
+            badgePosition?: string;
+        }[];
+        primaryButtonText?: string;
+        primaryButtonUrl?: string;
+        secondaryButtonText?: string;
+        secondaryButtonUrl?: string;
+
+        logos?: {
+            name: string;
+            imageUrl?: string;
+            textMarkup?: string;
+            customClass?: string;
+        }[];
+    };
+}
+
+const { data } = Astro.props;
+
+// Default values to use if Sanity hasn't been populated yet
+const defaultHeadline = "A place to display your<br />masterpiece.";
+const defaultSubline = "Artists can display their masterpieces, and buyers can discover and";
+const defaultPrimaryBtnTxt = "Join for $9.99/m";
+const defaultPrimaryBtnUrl = "#";
+const defaultSecondaryBtnTxt = "Read more";
+const defaultSecondaryBtnUrl = "#";
+const defaultImages = [
+    {
+        src: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=600&auto=format&fit=crop",
+        alt: "Retro gaming aesthetic",
+        targetClass: "z-10 -rotate-6 lg:-ml-0",
+    },
+    {
+        src: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop",
+        alt: "Abstract liquid art",
+        targetClass: "z-20 -rotate-3 -ml-8 lg:-ml-12",
+        badgeText: "@coplin", 
+        badgeColor: "bg-blue-500", 
+        badgePosition: "-top-10 -left-6"
+    },
+    {
+        src: "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=600&auto=format&fit=crop",
+        alt: "Colorful shapes",
+        targetClass: "z-30 rotate-0 -ml-8 lg:-ml-12 scale-105 shadow-[0_0_40px_rgba(255,255,255,0.1)]",
+    },
+    {
+        src: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=600&auto=format&fit=crop",
+        alt: "Abstract geometric art",
+        targetClass: "z-40 rotate-3 -ml-8 lg:-ml-12",
+    },
+    {
+        src: "https://images.unsplash.com/photo-1507908708918-778587c9e563?q=80&w=600&auto=format&fit=crop",
+        alt: "Creative portrait",
+        targetClass: "z-50 rotate-6 -ml-8 lg:-ml-12",
+        badgeText: "@andrea", 
+        badgeColor: "bg-emerald-500", 
+        badgePosition: "-top-10 -right-4"
+    },
+];
+const defaultLogos = [
+    { name: "Facebook", textMarkup: "Facebook", customClass: "tracking-wide" },
+    { name: "Instagram", textMarkup: "Instagram", customClass: "tracking-wide" },
+    { name: "Pinterest", textMarkup: "Pinterest", customClass: "tracking-wide" },
+    { name: "Google Ads", textMarkup: "Google Ads", customClass: "tracking-wide" },
+    { name: "LinkedIn", textMarkup: "LinkedIn", customClass: "tracking-wide" },
+    { name: "ChatGPT", textMarkup: "ChatGPT", customClass: "tracking-wide" },
+];
+
+const headline = data?.headline || defaultHeadline;
+const subline = data?.subline || defaultSubline;
+const cards = data?.cards && data.cards.length > 0 ? data.cards : defaultImages;
+const platformLogos = data?.logos && data.logos.length > 0 ? data.logos : defaultLogos;
+const primaryButtonText = data?.primaryButtonText || defaultPrimaryBtnTxt;
+const primaryButtonUrl = data?.primaryButtonUrl || defaultPrimaryBtnUrl;
+const secondaryButtonText = data?.secondaryButtonText || defaultSecondaryBtnTxt;
+const secondaryButtonUrl = data?.secondaryButtonUrl || defaultSecondaryBtnUrl;
+---
+
+<section class="pt-0 pb-24 mt-[-4rem] bg-black relative overflow-hidden" id="adbites-adlift-section">
+    <!-- Subtle Background Glow -->
+    <div
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-white/5 rounded-full blur-[120px] pointer-events-none"
+    >
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 relative z-10 flex flex-col items-center">
+        <!-- Header Text -->
+        <div class="text-center max-w-4xl mx-auto space-y-6 mb-20">
+            <!-- Ghost Button Badge -->
+            <div class="mb-4">
+                <span class="inline-block px-4 py-1.5 rounded-full border border-white/20 text-white text-sm font-medium backdrop-blur-md bg-white/5">
+                    Adbites AdLift
+                </span>
+            </div>
+            
+            <h2 
+                class="text-4xl md:text-6xl font-bold font-heading text-white tracking-tight leading-[1.1]"
+                set:html={headline}
+            />
+        </div>
+
+        <!-- Overlapping Card Cascade -->
+        <div class="flex justify-center items-center w-full px-4 mb-20" id="card-cascade-container">
+            <div class="flex flex-row items-center justify-center w-full max-w-5xl">
+                {cards.map((img, index) => (
+                    <div 
+                        class={`adlift-card relative shrink-0 transition-all duration-[1500ms] ease-[cubic-bezier(0.25,1,0.5,1)] hover:-translate-y-4 hover:z-[60] group cursor-pointer 
+                        z-${(index + 1) * 10} rotate-0 -ml-[50px] lg:-ml-[100px] opacity-0 translate-y-20`}
+                        data-target-class={img.targetClass}
+                    >
+                        
+                        {/* Tooltip Badge */}
+                        {img.badgeText && (
+                            <div class={`absolute ${img.badgePosition || '-top-10 -left-6'} ${img.badgeColor || 'bg-blue-500'} text-white px-4 py-1.5 rounded-2xl text-sm font-medium shadow-xl opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 z-10 hidden md:block`}>
+                                {img.badgeText}
+                                {/* Tooltip tail */}
+                                <svg class={`absolute w-4 h-4 text-current ${(img.badgePosition || '-left-6').includes('left') ? 'left-6' : 'right-6'} -bottom-2`} fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M0 0l8 8 8-8z"/>
+                                </svg>
+                            </div>
+                        )}
+
+                        {/* Card Content (4:5 Ratio) */}
+                        <div class="w-32 sm:w-40 md:w-52 lg:w-60 aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-zinc-900 overflow-hidden transform-gpu">
+                            <img 
+                                src={img.src} 
+                                alt={img.alt || "Card preview"}
+                                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                            />
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+
+        <!-- Editable Logos Strip -->
+        <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 w-full max-w-5xl mx-auto mb-16 opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
+            {platformLogos.map((logo) =>
+                logo.imageUrl ? (
+                    <img
+                        src={logo.imageUrl}
+                        alt={logo.name || "Platform Logo"}
+                        class={`h-6 md:h-10 w-auto object-contain transition-transform hover:scale-105 ${logo.customClass || ""}`}
+                        loading="lazy"
+                    />
+                ) : (
+                    <span
+                        class={`text-xl text-white font-bold font-heading whitespace-nowrap transition-transform hover:scale-105 cursor-default ${logo.customClass || ""}`}
+                        set:html={logo.textMarkup}
+                    />
+                ),
+            )}
+        </div>
+
+        <!-- Footer Text and Buttons -->
+        <div class="text-center max-w-2xl mx-auto space-y-8">
+            <p class="text-lg md:text-xl text-gray-400 font-light" set:html={subline} />
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4">
+                <a 
+                    href={primaryButtonUrl} 
+                    class="px-8 py-3.5 bg-zinc-800 hover:bg-zinc-700 text-white font-medium rounded-full transition-colors duration-200"
+                >
+                    {primaryButtonText}
+                </a>
+                <a 
+                    href={secondaryButtonUrl} 
+                    class="text-gray-400 hover:text-white transition-colors duration-200 text-sm font-medium"
+                >
+                    {secondaryButtonText}
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.3 // Trigger when 30% of the section is visible
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const cards = entry.target.querySelectorAll('.adlift-card');
+                    
+                    // Add a slight stagger effect to the animation
+                    cards.forEach((card, index) => {
+                        setTimeout(() => {
+                            const targetClasses = (card as HTMLElement).dataset.targetClass?.split(' ') || [];
+                            
+                            // Remove initial "stacked and hidden" classes
+                            card.classList.remove('rotate-0', '-ml-[50px]', 'lg:-ml-[100px]', 'opacity-0', 'translate-y-20');
+                            
+                            // Add the final "spread" classes defined in the array
+                            targetClasses.forEach(c => {
+                                if(c) card.classList.add(c);
+                            });
+                            
+                            // We need to specifically handle the first item's margin so it doesn't jump
+                            if(index !== 0) {
+                                // Default spacing for others
+                            } else {
+                                card.classList.remove('-ml-8', 'lg:-ml-12'); 
+                            }
+
+                        }, index * 100); // 100ms stagger between each card
+                    });
+                    
+                    // Unobserve after animating once
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        const section = document.getElementById('adbites-adlift-section');
+        if (section) {
+            observer.observe(section);
+        }
+    });
+</script>

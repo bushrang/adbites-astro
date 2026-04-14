@@ -1,5 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/Navbar.astro";
 import { sanityClient } from "../../lib/sanity";
 import ProductHero from "../../components/product/ProductHero.astro";
 import Intro from "../../components/Intro.astro";
@@ -9,7 +10,6 @@ import VisualSection from "../../components/product/VisualSection.astro";
 import CasesSection from "../../components/CasesSection.astro";
 import DynamicFaq from "../../components/product/DynamicFaq.astro";
 import ProductCTA from "../../components/product/ProductCTA.astro";
-import SuccessNumbers from "../../components/product/SuccessNumbers.astro";
 
 // Pre-render pages matching registered products in Sanity
 export async function getStaticPaths() {
@@ -47,9 +47,6 @@ const query = `*[_type == "product" && slug.current == $slug][0] {
       "fanCards": fanCards[].asset->url
     }
   },
-  successNumbersSection {
-    title, metrics[]{ topLabel, value, bottomLabel }, "mascotImage": mascotImage.asset->url
-  },
   casesSection {
     headline, subline,
     cases[]->{
@@ -81,6 +78,7 @@ const description = product.seo?.metaDescription || product.heroSection?.subline
 
 <Layout title={title}>
     <meta slot="head" name="description" content={description} />
+    <Navbar />
     
     <main class="bg-[#0d0101] min-h-screen text-slate-100">
         <!-- 1. Hero Section -->
@@ -97,15 +95,6 @@ const description = product.seo?.metaDescription || product.heroSection?.subline
         
         <!-- 4.5 Dynamic Visual Section Setup -->
         {product.visualSection && <VisualSection data={product.visualSection} />}
-        
-        <!-- 4.6 Success Numbers Section -->
-        {product.successNumbersSection && (
-            <SuccessNumbers
-                title={product.successNumbersSection.title}
-                metrics={product.successNumbersSection.metrics}
-                mascotImgSrc={product.successNumbersSection.mascotImage}
-            />
-        )}
         
         <!-- 5. Cases Section (Re-used) -->
         {product.casesSection && product.casesSection.cases?.length > 0 && <CasesSection data={product.casesSection} />}
