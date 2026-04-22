@@ -2,7 +2,9 @@
 // ServicesImage.astro
 ---
 
-<section class="py-16 md:py-24 bg-black relative">
+<section class="py-16 md:py-24 bg-transparent relative overflow-visible">
+    <!-- Glow bleed-in from Intro section above -->
+    <div class="absolute -top-48 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-brand-primary/5 rounded-full blur-[140px] pointer-events-none z-0"></div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 relative z-10 w-full">
         <!-- Centered Headline Overlapping the Image -->
         <div

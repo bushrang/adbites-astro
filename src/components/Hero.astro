@@ -27,7 +27,7 @@ const content = {
 ---
 
 <section
-  class="min-h-screen flex flex-col justify-center items-center relative z-20 px-4 md:px-0 bg-[#0d0101]"
+  class="min-h-screen flex flex-col justify-center items-center relative z-20 px-4 md:px-0 bg-transparent overflow-visible"
 >
   <!-- Map Texture Background -->
   <div
@@ -37,19 +37,25 @@ const content = {
   </div>
 
   <div
-    class="absolute inset-0 z-0 pointer-events-none flex items-center justify-center opacity-30"
+    class="absolute inset-0 z-0 pointer-events-none flex items-center justify-center opacity-40"
     style="mask-image: radial-gradient(circle at center, black 40%, transparent 80%); -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 80%);"
   >
     <div
-      class="w-full h-full opacity-60 mix-blend-screen"
+      class="w-full h-full mix-blend-soft-light"
       style="background-image: url('/assets/images/city_map_pattern.avif'); background-size: 300px; background-repeat: repeat;"
     >
     </div>
   </div>
 
-  <!-- Central Glow -->
+  <!-- Strong Vignette Overlay to darken the edges heavily and make center pop -->
+  <div class="absolute inset-0 pointer-events-none z-0" style="background: radial-gradient(circle at center, transparent 20%, #0d0101 100%);"></div>
+
+  <!-- Bottom Fade Out to guarantee the background texture and noise don't create crop lines at the bottom -->
+  <div class="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-[#0d0101] to-transparent pointer-events-none z-0"></div>
+
+  <!-- Central Glow — positioned low and allowed to overflow into Logos + Intro -->
   <div
-    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-primary/20 rounded-full blur-[120px] pointer-events-none z-0"
+    class="absolute top-[55%] left-1/2 -translate-x-1/2 w-[1000px] h-[1000px] bg-brand-primary/20 rounded-full blur-[160px] pointer-events-none z-0"
   >
   </div>
 

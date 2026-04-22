@@ -42,17 +42,10 @@ const logos =
           ];
 ---
 
-<section class="py-12 bg-[#0d0101] overflow-hidden relative group">
-    <!-- Fade Masks -->
-    <div
-        class="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#0d0101] to-transparent z-10 pointer-events-none"
-    >
-    </div>
-    <div
-        class="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#0d0101] to-transparent z-10 pointer-events-none"
-    >
-    </div>
-
+<section
+    class="-mt-12 pb-12 bg-transparent overflow-hidden relative group z-20"
+    style="mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);"
+>
     <div class="flex w-max animate-scroll group-hover:paused">
         <!-- Original Set -->
         <div

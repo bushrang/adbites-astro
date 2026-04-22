@@ -10,6 +10,7 @@ import VisualSection from "../../components/product/VisualSection.astro";
 import CasesSection from "../../components/CasesSection.astro";
 import DynamicFaq from "../../components/product/DynamicFaq.astro";
 import ProductCTA from "../../components/product/ProductCTA.astro";
+import ClientLogoGrid from "../../components/product/ClientLogoGrid.astro";
 
 // Pre-render pages matching registered products in Sanity
 export async function getStaticPaths() {
@@ -52,6 +53,9 @@ const query = `*[_type == "product" && slug.current == $slug][0] {
     cases[]->{
       clientName, "image": projectImage.asset->url, challenge, solution
     }
+  },
+  clientLogoGridSection {
+    headline, subline, logos[]{ altText, "imageUrl": image.asset->url }
   },
   faqSection {
     headline, sublines, faqs[] { question, answer }
@@ -98,6 +102,9 @@ const description = product.seo?.metaDescription || product.heroSection?.subline
         
         <!-- 5. Cases Section (Re-used) -->
         {product.casesSection && product.casesSection.cases?.length > 0 && <CasesSection data={product.casesSection} />}
+        
+        <!-- 5.5 Client Logo Grid Section -->
+        {product.clientLogoGridSection && product.clientLogoGridSection.logos?.length > 0 && <ClientLogoGrid data={product.clientLogoGridSection} />}
         
         <!-- 6. FAQ Section (Dynamic version) -->
         {product.faqSection && product.faqSection.faqs?.length > 0 && <DynamicFaq data={product.faqSection} />}

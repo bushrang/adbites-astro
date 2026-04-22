@@ -145,6 +145,30 @@ export default {
             options: { collapsible: true, collapsed: true },
         },
         {
+            name: 'clientLogoGridSection',
+            title: 'Client Logo Grid Section',
+            type: 'object',
+            fields: [
+                { name: 'headline', title: 'Headline', type: 'string', initialValue: 'Kunden, die auf uns vertrauen' },
+                { name: 'subline', title: 'Subline', type: 'text', rows: 2 },
+                {
+                    name: 'logos',
+                    title: 'Client Logos',
+                    type: 'array',
+                    of: [
+                        {
+                            type: 'object',
+                            fields: [
+                                { name: 'image', title: 'Logo Image', type: 'image', options: { hotspot: true } },
+                                { name: 'altText', title: 'Alt Text / Company Name', type: 'string' }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            options: { collapsible: true, collapsed: true },
+        },
+        {
             name: 'faqSection',
             title: 'FAQ Section',
             type: 'object',
