@@ -117,7 +117,7 @@ const allItems = columns.flatMap((col: any) => col.items || []);
     <div id="mega-panel" class="hidden lg:block fixed inset-x-0 top-0 z-40 pointer-events-none opacity-0 translate-y-[-10px] transition-all duration-300">
         <div class="pt-[88px]">
             <div class="max-w-6xl mx-auto px-6">
-                <div class="pointer-events-auto bg-[#0c1020]/95 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.6)] p-8" style={`display:grid; grid-template-columns: ${'1fr '.repeat(columns.length)}1.1fr; gap: 2rem;`}>
+                <div class="bg-[#0c1020]/95 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.6)] p-8" style={`display:grid; grid-template-columns: ${'1fr '.repeat(columns.length)}1.1fr; gap: 2rem;`}>
                     {columns.map((col: any) => (
                         <div>
                             <p class="text-[11px] font-bold uppercase tracking-[0.15em] text-slate-500 mb-5">{col.columnTitle}</p>
