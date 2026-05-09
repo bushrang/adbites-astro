@@ -78,8 +78,10 @@ const {
 	<body
 		class="bg-brand-dark text-white font-sans antialiased selection:bg-brand-primary selection:text-brand-dark overflow-x-hidden"
 	>
-		<Navbar />
-		<slot />
-		<Footer />
+		<div class="relative w-full overflow-x-hidden flex flex-col min-h-screen">
+			<Navbar />
+			<slot />
+			<Footer />
+		</div>
 	</body>
 </html>
