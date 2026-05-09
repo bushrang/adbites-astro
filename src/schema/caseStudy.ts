@@ -37,12 +37,17 @@ export default {
             rows: 3,
         },
         {
-            name: 'result',
-            title: 'The Result (Outcome)',
-            type: 'object',
-            fields: [
-                { name: 'metric', title: 'Metric', type: 'string' },
-                { name: 'value', title: 'Value Change', type: 'string' },
+            name: 'results',
+            title: 'Success Metrics (Results)',
+            type: 'array',
+            of: [
+                {
+                    type: 'object',
+                    fields: [
+                        { name: 'metric', title: 'Metric (e.g. ROAS)', type: 'string' },
+                        { name: 'value', title: 'Value (e.g. +45%)', type: 'string' },
+                    ],
+                }
             ],
         },
         {

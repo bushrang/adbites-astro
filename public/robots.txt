@@ -1,0 +1,121 @@
+# robots.txt
+# Allow all crawlers by default
+
+User-agent: *
+Allow: /
+
+# -----------------------------------------------
+# OpenAI
+# -----------------------------------------------
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+# -----------------------------------------------
+# Anthropic
+# -----------------------------------------------
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# -----------------------------------------------
+# Google AI
+# -----------------------------------------------
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+# -----------------------------------------------
+# Perplexity
+# -----------------------------------------------
+User-agent: PerplexityBot
+Allow: /
+
+# -----------------------------------------------
+# Meta / Facebook
+# -----------------------------------------------
+User-agent: FacebookBot
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: Meta-ExternalFetcher
+Allow: /
+
+# -----------------------------------------------
+# Apple
+# -----------------------------------------------
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# -----------------------------------------------
+# Microsoft / Bing
+# -----------------------------------------------
+User-agent: Bingbot
+Allow: /
+
+User-agent: BingPreview
+Allow: /
+
+# -----------------------------------------------
+# Cohere
+# -----------------------------------------------
+User-agent: cohere-ai
+Allow: /
+
+# -----------------------------------------------
+# You.com
+# -----------------------------------------------
+User-agent: YouBot
+Allow: /
+
+# -----------------------------------------------
+# Diffbot
+# -----------------------------------------------
+User-agent: Diffbot
+Allow: /
+
+# -----------------------------------------------
+# Common Crawl (used by many AI training sets)
+# -----------------------------------------------
+User-agent: CCBot
+Allow: /
+
+# -----------------------------------------------
+# ByteDance / TikTok
+# -----------------------------------------------
+User-agent: Bytespider
+Allow: /
+
+# -----------------------------------------------
+# Amazon Alexa
+# -----------------------------------------------
+User-agent: Amazonbot
+Allow: /
+
+# -----------------------------------------------
+# Timpibot (Brave Search)
+# -----------------------------------------------
+User-agent: Timpibot
+Allow: /
+
+# -----------------------------------------------
+# Sitemap
+# -----------------------------------------------
+Sitemap: https://www.adbites.de/sitemap-index.xml

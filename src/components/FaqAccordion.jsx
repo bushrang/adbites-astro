@@ -68,8 +68,9 @@ const AccordionItem = ({ question, answer, isOpen, onClick }) => {
     );
 };
 
-export default function FaqAccordion() {
+export default function FaqAccordion({ faqs }) {
     const [openIndex, setOpenIndex] = useState(0); // First one open by default
+    const displayFaqs = faqs && faqs.length > 0 ? faqs : questions;
 
     const handleItemClick = (index) => {
         setOpenIndex(openIndex === index ? -1 : index);
@@ -77,7 +78,7 @@ export default function FaqAccordion() {
 
     return (
         <div className="w-full">
-            {questions.map((item, index) => (
+            {displayFaqs.map((item, index) => (
                 <AccordionItem
                     key={index}
                     question={item.question}

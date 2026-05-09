@@ -129,5 +129,12 @@ export default defineType({
                 ],
             },
         }),
+        defineField({
+            name: 'llmsDescription',
+            title: 'LLM Description (AI Index)',
+            type: 'text',
+            rows: 4,
+            description: 'Factual, entity-rich 1–2 sentence description for AI crawlers (llms.txt, .md pages). If set, this overrides the SEO meta description in all AI-facing outputs. Write what the service IS, not marketing copy.',
+        }),
     ],
 });

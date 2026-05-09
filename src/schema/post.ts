@@ -137,7 +137,14 @@ export default defineType({
                     title: 'Canonical URL',
                     type: 'url',
                     description: 'Optional. If this post was originally published elsewhere.',
-                })
+                }),
+                defineField({
+                    name: 'llmsDescription',
+                    title: 'LLM Description (AI Index)',
+                    type: 'text',
+                    rows: 3,
+                    description: 'Factual 1–2 sentence description for AI crawlers (llms.txt, .md pages). If set, this overrides the meta description in all AI-facing outputs.',
+                }),
             ]
         })
     ],

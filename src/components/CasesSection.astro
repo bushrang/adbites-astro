@@ -8,6 +8,7 @@ interface Props {
             image?: string;
             challenge?: string;
             solution?: string;
+            results?: { metric: string; value: string }[];
         }[];
     };
 }
@@ -26,6 +27,10 @@ const defaultCases = [
             "Fragmentierte Werbemaßnahmen über 45 Standorte führten zu Ineffizienzen und fehlender lokaler Sichtbarkeit.",
         solution:
             "Implementierung einer zentralisierten Ad-Tech-Plattform mit automatisiertem Geo-Targeting für jeden Standort.",
+        results: [
+            { metric: "Lokale ROAS", value: "+45%" },
+            { metric: "Store Visits", value: "+28%" }
+        ]
     },
     {
         clientName: "EK Retail",
@@ -34,6 +39,10 @@ const defaultCases = [
             "Geringe Online-Sichtbarkeit der Mitgliedshäuser im Vergleich zu reinen Online-Playern.",
         solution:
             "Entwicklung einer 'Local Hero' Strategie mit hyperlokalen SEO- und SEA-Kampagnen für 200+ Mitglieder.",
+        results: [
+            { metric: "Sichtbarkeit", value: "+110%" },
+            { metric: "Click-Through", value: "3.2x" }
+        ]
     },
     {
         clientName: "Intersport",
@@ -42,6 +51,10 @@ const defaultCases = [
             "Schwierigkeit, die Offline-Verfügbarkeit von Produkten in Online-Ads effektiv zu kommunizieren.",
         solution:
             "Verknüpfung der lokalen Warenwirtschaftssysteme mit Google Local Inventory Ads in Echtzeit.",
+        results: [
+            { metric: "Umsatz Offline", value: "+18%" },
+            { metric: "Ad-Relevanz", value: "Sehr Hoch" }
+        ]
     },
 ];
 
@@ -143,6 +156,19 @@ const cases = data?.cases && data.cases.length > 0 ? data.cases : defaultCases;
                                             "Keine Lösung verfügbar."}
                                     </p>
                                 </div>
+                                
+                                {caseStudy.results && caseStudy.results.length > 0 && (
+                                    <div class="pt-2 mt-2 border-t border-white/5 group-hover:border-white/10 transition-colors transform translate-y-0 transition-transform duration-500 delay-100">
+                                        <div class="grid grid-cols-2 gap-3 mt-4">
+                                            {caseStudy.results.map((r: any) => (
+                                                <div class="flex flex-col bg-white/5 rounded-lg p-3 group-hover:bg-brand-primary/10 transition-colors border border-transparent group-hover:border-brand-primary/20">
+                                                    <span class="text-[9px] uppercase tracking-wider text-gray-400 mb-1">{r.metric}</span>
+                                                    <span class="text-lg font-bold font-heading text-white group-hover:text-brand-primary group-hover:drop-shadow-[0_0_8px_rgba(255,107,0,0.5)] transition-all">{r.value}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>

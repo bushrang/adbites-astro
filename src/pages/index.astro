@@ -58,12 +58,29 @@ if (homepageData) {
 	);
 }
 // ----------------------------------------------------------------------
+
+const faqData = homepageData?.faqSection?.faqs;
+const faqSchema = faqData && faqData.length > 0 ? {
+	"@type": "FAQPage",
+	"@id": "https://www.adbites.de/#faqpage",
+	mainEntity: faqData.map((f: any) => ({
+		"@type": "Question",
+		name: f.question,
+		acceptedAnswer: {
+			"@type": "Answer",
+			text: f.answer
+		}
+	}))
+} : null;
 ---
 
 <Layout
 	title={homepageData?.seo?.metaTitle ||
 		"Adbites Astro | SEO & GEO Technology Agency"}
+	pageSchema={faqSchema}
 >
+	<meta slot="head" name="description" content={homepageData?.seo?.metaDescription || "GEO & SEO Agentur"} />
+
 	<Hero data={homepageData} />
 	<Logos data={homepageData?.logos} />
 	<Intro data={homepageData?.introSection} />
@@ -78,5 +95,5 @@ if (homepageData) {
 	<CasesSection data={homepageData?.casesSection} />
 	<TeamSection data={homepageData?.teamSection} />
 	<PricingSection />
-	<FaqSection />
+	<FaqSection data={homepageData?.faqSection} />
 </Layout>

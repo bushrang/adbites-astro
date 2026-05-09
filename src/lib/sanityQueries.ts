@@ -1,3 +1,19 @@
+export const GROQ_NAVIGATION = `*[_type == "navigation"][0] {
+  megaMenuColumns[] {
+    columnTitle,
+    items[] { label, description, href, iconColor, iconName }
+  },
+  topLinks[] { label, href },
+  featuredLabel,
+  featuredTitle,
+  featuredText,
+  featuredButtonText,
+  featuredButtonUrl,
+  "featuredImageUrl": featuredImage.asset->url,
+  ctaText,
+  ctaUrl
+}`;
+
 export const GROQ_LOCATIONS = `*[_type == "location" && defined(slug.current)] {
   "slug": slug.current,
   name
@@ -43,7 +59,7 @@ export const GROQ_SERVICE_BY_SLUG = `*[_type == "service" && slug.current == $sl
     clientName,
     challenge,
     solution,
-    result,
+    results[] { metric, value },
     "videoUrl": video.asset->url
   },
   "spotlightCaseStudy": spotlightCaseStudy->{
@@ -107,7 +123,8 @@ export const GROQ_HOMEPAGE = `*[_type == "homepage"][0] {
       clientName,
       "image": projectImage.asset->url,
       challenge,
-      solution
+      solution,
+      results[] { metric, value }
     }
   },
   "proofOfConceptSection": proofOfConceptSection {
@@ -128,7 +145,8 @@ export const GROQ_HOMEPAGE = `*[_type == "homepage"][0] {
   "founderDemoSection": founderDemoSection {
     headline,
     subline,
-    videoUrl
+    videoUrl,
+    "posterImageUrl": posterImage.asset->url
   },
   "multiWorkspaceSection": multiWorkspaceSection {
     headline,
@@ -160,6 +178,7 @@ export const GROQ_HOMEPAGE = `*[_type == "homepage"][0] {
     secondaryButtonText,
     secondaryButtonUrl
   },
+  faqSection,
   seo
 }`;
 
@@ -171,7 +190,6 @@ export const GROQ_SCHEMA_GRAPH = `{
     foundingDate,
     "logo": logo.asset->url,
     description,
-    taxId,
     vatId,
     isoCode,
     sameAs,

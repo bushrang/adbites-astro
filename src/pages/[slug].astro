@@ -41,8 +41,8 @@ const { title, seo, hero, content, kpis, focus, managedBy, caseStudies } =
 
 const faqSchema = service.faqs
     ? {
-          "@context": "https://schema.org",
           "@type": "FAQPage",
+          "@id": `https://www.adbites.de/${slug}#faqpage`,
           mainEntity: service.faqs.map((faq: any) => ({
               "@type": "Question",
               name: faq.question,
@@ -54,9 +54,7 @@ const faqSchema = service.faqs
       }
     : null;
 
-const schemaGraph = {
-    "@context": "https://schema.org",
-    "@graph": [
+const pageSchemaObjects = [
         {
             "@type": "Service",
             "@id": `https://www.adbites.de/${slug}/#service`,
@@ -112,16 +110,14 @@ const schemaGraph = {
                 },
             ],
         },
-    ],
-};
+    ];
 ---
 
 <Layout
     title={seo?.metaTitle || title + " - Adbites Agentur"}
     description={seo?.metaDescription}
+    pageSchema={pageSchemaObjects}
 >
-    <!-- JSON-LD Injection -->
-    <script type="application/ld+json" set:html={JSON.stringify(schemaGraph)} />
 
     <main class="bg-brand-dark min-h-screen text-white">
         {/* Hero Section */}

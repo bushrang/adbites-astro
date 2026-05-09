@@ -1,11 +1,13 @@
 ---
 import SocialFanOut from "./SocialFanOut.jsx";
+import VideoGalleryCarousel from "./VideoGalleryCarousel.jsx";
 
 interface Props {
     data?: {
         designType?: string;
          সামাজিকFanOutData?: any; // To be mapped nicely from GROQ
         socialFanOutData?: any;
+        videoGalleryData?: any;
     };
 }
 
@@ -18,11 +20,8 @@ if (!data || !data.designType) return null;
     <SocialFanOut client:visible data={data.socialFanOutData} />
 )}
 
-{data.designType === 'design-2' && (
-    <div class="py-24 text-center text-slate-400 bg-transparent">
-        <h2 class="text-3xl font-bold mb-4">VisualSection (Design 2 Placeholder)</h2>
-        <p>This design type has not been implemented yet.</p>
-    </div>
+{data.designType === 'design-2-video-gallery' && data.videoGalleryData && (
+    <VideoGalleryCarousel client:visible data={data.videoGalleryData} />
 )}
 
 {data.designType === 'design-3' && (

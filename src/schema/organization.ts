@@ -49,12 +49,6 @@ export default defineType({
             validation: (Rule) => Rule.max(160).warning('Keep it concise for SEO.'),
         }),
         defineField({
-            name: 'taxId',
-            title: 'Tax ID (Steuernummer)',
-            type: 'string',
-            group: 'identity',
-        }),
-        defineField({
             name: 'vatId',
             title: 'VAT ID (USt-IdNr.)',
             type: 'string',

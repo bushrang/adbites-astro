@@ -3,6 +3,7 @@ import Layout from "../../layouts/Layout.astro";
 import { sanityClient } from "../../lib/sanity";
 import ProductHero from "../../components/product/ProductHero.astro";
 import Intro from "../../components/Intro.astro";
+import FounderDemo from "../../components/FounderDemo.astro";
 import Logos from "../../components/Logos.astro";
 import ProductFeatures from "../../components/product/ProductFeatures.astro";
 import VisualSection from "../../components/product/VisualSection.astro";
@@ -11,6 +12,8 @@ import DynamicFaq from "../../components/product/DynamicFaq.astro";
 import ProductCTA from "../../components/product/ProductCTA.astro";
 import SuccessNumbers from "../../components/product/SuccessNumbers.astro";
 import ClientLogoGrid from "../../components/product/ClientLogoGrid.astro";
+import ComparisonSection from "../../components/product/ComparisonSection.astro";
+import FeatureGrid from "../../components/product/FeatureGrid.astro";
 
 // Pre-render pages matching registered products in Sanity
 export async function getStaticPaths() {
@@ -33,11 +36,19 @@ const query = `*[_type == "product" && slug.current == $slug][0] {
   introSection {
     headline, subline
   },
+  founderDemoSection {
+    headline, subline, videoUrl, "posterImageUrl": posterImage.asset->url
+  },
+  logosText,
   logos[] {
     name, "imageUrl": image.asset->url, textMarkup, customClass
   },
   featureSections[] {
     badge, headline, text, "image": image.asset->url, buttonText, buttonUrl
+  },
+  featureGridSection {
+    sectionHeadline, sectionSubline,
+    features[]{ icon, headline, description }
   },
   visualSection {
     designType,
@@ -46,15 +57,31 @@ const query = `*[_type == "product" && slug.current == $slug][0] {
       subline,
       "centerPhoneImage": centerPhoneImage.asset->url,
       "fanCards": fanCards[].asset->url
+    },
+    videoGalleryData {
+      headline,
+      subline,
+      videos[] {
+        title,
+        subtitle,
+        "videoFile": videoFile.asset->url,
+        "posterImage": posterImage.asset->url
+      }
     }
   },
   successNumbersSection {
     title, metrics[]{ topLabel, value, bottomLabel }, "mascotImage": mascotImage.asset->url
   },
+  comparisonSection {
+    headline, subline,
+    freelancerCard { title, price, features },
+    agencyCard { title, price, features },
+    adbitesCard { title, price, badge, features }
+  },
   casesSection {
     headline, subline,
     cases[]->{
-      clientName, "image": projectImage.asset->url, challenge, solution
+      clientName, "image": projectImage.asset->url, challenge, solution, results[]{metric, value}
     }
   },
   clientLogoGridSection {
@@ -81,9 +108,23 @@ if (!product) {
 
 const title = product.seo?.metaTitle || `${product.title} | Adbites`;
 const description = product.seo?.metaDescription || product.heroSection?.subline || "Adbites Product";
+
+const faqData = product.faqSection?.faqs;
+const faqSchema = faqData && faqData.length > 0 ? {
+    "@type": "FAQPage",
+    "@id": `https://www.adbites.de/produkte/${slug}#faqpage`,
+    mainEntity: faqData.map((f: any) => ({
+        "@type": "Question",
+        name: f.question,
+        acceptedAnswer: {
+            "@type": "Answer",
+            text: f.answer
+        }
+    }))
+} : null;
 ---
 
-<Layout title={title}>
+<Layout title={title} pageSchema={faqSchema}>
     <meta slot="head" name="description" content={description} />
     
     <main class="bg-[#0d0101] min-h-screen text-slate-100">
@@ -91,16 +132,25 @@ const description = product.seo?.metaDescription || product.heroSection?.subline
         {product.heroSection && <ProductHero data={product.heroSection} />}
         
         <!-- 2. Marquee Logos (Fallback to default if empty) -->
-        <Logos data={product.logos} />
+        <Logos data={product.logos} title={product.logosText} />
         
         <!-- 3. Intro Section -->
         {product.introSection && <Intro data={product.introSection} />}
         
+        <!-- 3.5 Founder Demo Section -->
+        {product.founderDemoSection && <FounderDemo data={product.founderDemoSection} />}
+        
         <!-- 4. Flexible Feature Sections -->
         {product.featureSections && product.featureSections.length > 0 && <ProductFeatures features={product.featureSections} />}
         
+        <!-- 4.2 Feature Grid -->
+        {product.featureGridSection && <FeatureGrid data={product.featureGridSection} />}
+        
         <!-- 4.5 Dynamic Visual Section Setup -->
         {product.visualSection && <VisualSection data={product.visualSection} />}
+        
+        <!-- 4.7 Comparison Section -->
+        {product.comparisonSection && <ComparisonSection data={product.comparisonSection} />}
         
         <!-- 4.6 Success Numbers Section -->
         {product.successNumbersSection && (

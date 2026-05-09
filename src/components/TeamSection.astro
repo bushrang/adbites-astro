@@ -8,7 +8,7 @@ const { data } = Astro.props;
 const heroBadgeText = data?.heroBadgeText || "Adbites Original";
 const headline = data?.headline || "THE<br/>A-TEAM";
 const description = data?.description || "Eine Spezial-Einheit aus Creatives, Strategen und Performance-Experten. Wir produzieren nicht nur schönen Content, wir bauen Sales-Maschinen für deinen lokalen Handel.";
-const heroImage = data?.heroImage || "https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80";
+const heroImage = data?.heroImage || "/teambackground.webp";
 
 const teamMembers = data?.members?.length ? data.members : [
   {
@@ -45,17 +45,19 @@ const teamMembers = data?.members?.length ? data.members : [
 ---
 <section class="min-h-[90vh] bg-transparent relative flex flex-col justify-end pt-32 pb-8 overflow-hidden" id="team">
     <!-- Netflix-style Background Image -->
-    <div class="absolute inset-0 z-0 select-none">
+    <div class="absolute inset-x-0 top-0 bottom-[30%] z-0 select-none">
         <img 
             src={heroImage} 
             alt="The Team" 
-            class="w-full h-full object-cover object-right md:object-center opacity-40 mix-blend-luminosity md:mix-blend-normal"
+            class="w-full h-full object-cover object-right md:object-center opacity-100"
         />
         <!-- Dramatic gradient overlays -->
-        <!-- Fade from black on bottom -->
-        <div class="absolute inset-0 bg-gradient-to-t from-[#0d0101] via-[#0d0101]/60 to-transparent"></div>
-        <!-- Fade from black on left -->
-        <div class="absolute inset-0 bg-gradient-to-r from-[#0d0101] via-[#0d0101]/80 to-transparent w-full md:w-3/4 lg:w-2/3"></div>
+        <!-- Fade from black on top to blend the hard edge -->
+        <div class="absolute inset-x-0 top-0 h-[40%] bg-gradient-to-b from-[#0d0101] via-[#0d0101]/80 to-transparent"></div>
+        <!-- Fade from black on left for text readability -->
+        <div class="absolute inset-0 bg-gradient-to-r from-[#0d0101] via-[#0d0101]/90 to-transparent w-full md:w-2/3 lg:w-1/2"></div>
+        <!-- Strong fade from black on bottom edge to blend into the section before the headline -->
+        <div class="absolute inset-x-0 bottom-0 h-[40%] bg-gradient-to-t from-[#0d0101] via-[#0d0101]/80 to-transparent"></div>
     </div>
 
     <!-- Content Block -->
@@ -132,22 +134,60 @@ const teamMembers = data?.members?.length ? data.members : [
 </section>
 
 <script>
-    const container = document.getElementById('carouselContainer');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    
-    if (container && prevBtn && nextBtn) {
-        const getScrollAmount = () => {
-             const card = container.querySelector('.snap-start');
-             return card ? (card as HTMLElement).offsetWidth + 24 : 344;
-        };
+    document.addEventListener('DOMContentLoaded', () => {
+        const container = document.getElementById('carouselContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        
+        if (container && prevBtn && nextBtn) {
+            let scrollTimeout: ReturnType<typeof setTimeout>;
+            let isScrolling = false;
 
-        nextBtn.addEventListener('click', () => {
-            container.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
-        });
+            const scrollCarousel = (direction: number) => {
+                if (isScrolling) return;
 
-        prevBtn.addEventListener('click', () => {
-            container.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
-        });
-    }
+                const card = container.querySelector('.snap-start') as HTMLElement;
+                if (!card) return;
+                
+                const gap = parseFloat(getComputedStyle(container).gap) || 24;
+                const scrollAmount = (card.offsetWidth + gap) * direction;
+
+                // Completely disable snapping via classes so the browser doesn't fight the smooth scroll
+                container.classList.remove('snap-x', 'snap-mandatory');
+                isScrolling = true;
+
+                container.scrollBy({
+                    left: scrollAmount,
+                    behavior: 'smooth'
+                });
+
+                // Restore snapping after the scroll animation is complete
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    container.classList.add('snap-x', 'snap-mandatory');
+                    isScrolling = false;
+                }, 600); // 600ms is enough for most native smooth scrolls
+            };
+
+            nextBtn.addEventListener('click', () => scrollCarousel(1));
+            prevBtn.addEventListener('click', () => scrollCarousel(-1));
+
+            const updateButtons = () => {
+                const atStart = container.scrollLeft <= 10;
+                prevBtn.style.opacity = atStart ? '0.3' : '1';
+                prevBtn.style.pointerEvents = atStart ? 'none' : 'auto';
+                
+                const maxScroll = container.scrollWidth - container.clientWidth;
+                const atEnd = container.scrollLeft >= maxScroll - 10;
+                nextBtn.style.opacity = atEnd ? '0.3' : '1';
+                nextBtn.style.pointerEvents = atEnd ? 'none' : 'auto';
+            };
+
+            container.addEventListener('scroll', updateButtons, { passive: true });
+            
+            // Check immediately and after a short delay for layout shifts
+            updateButtons();
+            setTimeout(updateButtons, 150);
+        }
+    });
 </script>

@@ -10,10 +10,12 @@ import post from './post';
 import category from './category';
 import product from './product';
 import legalPage from './legalPage';
+import navigation from './navigation';
 
 export const schemaTypes = [
     // Singletons
     organization,
+    navigation,
     // Documents
     homepage,
     service,

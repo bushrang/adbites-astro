@@ -8,11 +8,13 @@ interface Props {
 	title: string;
 	description?: string;
 	lang?: string;
+	pageSchema?: any;
 }
 
 const {
 	title,
 	description = "Adbites Astro - Leading Agency for SEO/GEO Technology",
+	pageSchema,
 } = Astro.props;
 ---
 
@@ -55,7 +57,7 @@ const {
 		/>
 
 		<!-- GEO/SEO: JSON-LD Graph -->
-		<SchemaGraph />
+		<SchemaGraph pageSchema={pageSchema} />
 
 		<!-- Speculative Rules API for instant navigation -->
 		<script type="speculationrules">

@@ -1,5 +1,13 @@
 ---
 import FaqAccordion from "./FaqAccordion.jsx";
+
+const { data } = Astro.props;
+const headline = data?.headline || "Fragen? <br /> <span class=\"text-white\"> Lass uns das mal klären. </span>";
+const sublines = data?.sublines || [
+    "Ganz klar: Marketing, Ad-Tech, Daten-Analyse... viele Buzzwords können verwirrend sein.",
+    "Wir sind hier, um Klarheit zu schaffen. Schau mal durch unsere FAQs. Sollte deine Frage fehlen, ist unser Team immer für dich da."
+];
+const faqs = data?.faqs || null;
 ---
 
 <section
@@ -12,19 +20,13 @@ import FaqAccordion from "./FaqAccordion.jsx";
             <div class="lg:sticky lg:top-32 h-fit">
                 <h2
                     class="text-4xl md:text-6xl font-heading font-bold text-white mb-8 leading-tight"
-                >
-                    Fragen? <br />
-                    <span class="text-white"> Lass uns das mal klären. </span>
-                </h2>
-                <p class="text-lg text-slate-400 max-w-md leading-relaxed mb-8">
-                    Ganz klar: Marketing, Ad-Tech, Daten-Analyse... viele
-                    Buzzwords können verwirrend sein.
-                </p>
-                <p class="text-lg text-slate-400 max-w-md leading-relaxed">
-                    Wir sind hier, um Klarheit zu schaffen. Schau mal durch
-                    unsere FAQs. Sollte deine Frage fehlen, ist unser Team immer
-                    für dich da.
-                </p>
+                    set:html={headline}
+                />
+                {sublines.map((sub: string) => (
+                    <p class="text-lg text-slate-400 max-w-md leading-relaxed mb-8 last:mb-0">
+                        {sub}
+                    </p>
+                ))}
 
                 <div class="mt-12 hidden lg:block">
                     <!-- Decorative Arrow or visual element could go here -->
@@ -50,7 +52,7 @@ import FaqAccordion from "./FaqAccordion.jsx";
 
             <!-- Right Column: Accordion -->
             <div class="w-full">
-                <FaqAccordion client:visible />
+                <FaqAccordion client:visible faqs={faqs} />
             </div>
         </div>
     </div>

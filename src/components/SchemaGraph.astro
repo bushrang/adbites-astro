@@ -2,6 +2,11 @@
 import { sanityClient } from "sanity:client";
 import { GROQ_SCHEMA_GRAPH } from "../lib/sanityQueries";
 
+export interface Props {
+    pageSchema?: any;
+}
+
+const { pageSchema } = Astro.props;
 const data = await sanityClient.fetch(GROQ_SCHEMA_GRAPH);
 const { organization, person, services } = data || {};
 
@@ -15,9 +20,8 @@ const organizationSchema = organization
           logo: organization.logo,
           description: organization.description,
           foundingDate: organization.foundingDate,
-          taxID: organization.taxId,
           vatID: organization.vatId,
-          sameAs: organization.sameAs,
+          sameAs: organization.sameAs?.filter(Boolean),
           address: organization.address
               ? {
                     "@type": "PostalAddress",
@@ -38,15 +42,16 @@ const organizationSchema = organization
               "@type": "ContactPoint",
               telephone: cp.telephone,
               contactType: cp.contactType,
-              email: cp.email,
+              email: cp.email?.replace(/\[(.*?)\]\(.*?\)/, '$1'),
               areaServed: organization.areaServed,
           })),
           founder: organization.founders?.map((founder: any) => ({
               "@type": "Person",
+              "@id": `${organization.url || "https://www.adbites.de"}/team/${founder.name?.toLowerCase().replace(/\s+/g, '-') || 'founder'}#person`,
               name: founder.name,
               image: founder.image,
               jobTitle: founder.role,
-              sameAs: founder.sameAs,
+              sameAs: founder.sameAs?.filter(Boolean),
           })),
           knowsAbout:
               organization.knowsAbout || services?.map((s: any) => s.title),
@@ -71,7 +76,7 @@ const websiteSchema = {
 
 const graph = {
     "@context": "https://schema.org",
-    "@graph": [organizationSchema, websiteSchema].filter(Boolean),
+    "@graph": [organizationSchema, websiteSchema, ...(Array.isArray(pageSchema) ? pageSchema : [pageSchema])].filter(Boolean),
 };
 ---
 

@@ -317,6 +317,13 @@ export default {
                     title: 'YouTube Video URL',
                     type: 'url',
                     description: 'The full URL of the YouTube video to embed (e.g., https://www.youtube.com/watch?v=...)',
+                },
+                {
+                    name: 'posterImage',
+                    title: 'Poster Image',
+                    type: 'image',
+                    options: { hotspot: true },
+                    description: 'Image displayed before the video plays.',
                 }
             ],
             options: {
@@ -421,6 +428,44 @@ export default {
                 { name: 'primaryButtonUrl', title: 'Primary Button URL', type: 'string', initialValue: '#' },
                 { name: 'secondaryButtonText', title: 'Secondary Button Text', type: 'string', initialValue: 'Read more' },
                 { name: 'secondaryButtonUrl', title: 'Secondary Button URL', type: 'string', initialValue: '#' },
+            ],
+            options: {
+                collapsible: true,
+                collapsed: true,
+            },
+        },
+        {
+            name: 'faqSection',
+            title: 'FAQ Section',
+            type: 'object',
+            fields: [
+                {
+                    name: 'headline',
+                    title: 'Headline',
+                    type: 'string',
+                    description: 'e.g., "Fragen? <br /> Lass uns das mal klären."',
+                },
+                {
+                    name: 'sublines',
+                    title: 'Sublines',
+                    type: 'array',
+                    of: [{ type: 'text', rows: 3 }],
+                    description: 'Paragraphs of text below the headline.',
+                },
+                {
+                    name: 'faqs',
+                    title: 'FAQs',
+                    type: 'array',
+                    of: [
+                        {
+                            type: 'object',
+                            fields: [
+                                { name: 'question', title: 'Question', type: 'string' },
+                                { name: 'answer', title: 'Answer', type: 'text', rows: 4 },
+                            ],
+                        },
+                    ],
+                },
             ],
             options: {
                 collapsible: true,

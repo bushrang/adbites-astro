@@ -49,6 +49,24 @@ export default {
             options: { collapsible: true, collapsed: true },
         },
         {
+            name: 'founderDemoSection',
+            title: 'Founder Demo Video Section',
+            type: 'object',
+            fields: [
+                { name: 'headline', title: 'Headline', type: 'string' },
+                { name: 'subline', title: 'Subline', type: 'text', rows: 3 },
+                { name: 'videoUrl', title: 'YouTube Video URL', type: 'url' },
+                {
+                    name: 'posterImage',
+                    title: 'Poster Image',
+                    type: 'image',
+                    options: { hotspot: true },
+                    description: 'Image displayed before the video plays.',
+                }
+            ],
+            options: { collapsible: true, collapsed: true },
+        },
+        {
             name: 'logos',
             title: 'Partner / Trust Logos (Marquee)',
             type: 'array',
@@ -64,6 +82,12 @@ export default {
                 },
             ],
             description: 'Logos displayed in the scrolling banner below the Hero section.',
+        },
+        {
+            name: 'logosText',
+            title: 'Optional Text Above Logos',
+            type: 'string',
+            description: 'Optional small text line shown above the logo marquee.',
         },
         {
             name: 'featureSections',
@@ -84,6 +108,67 @@ export default {
             ],
         },
         {
+            name: 'featureGridSection',
+            title: 'Feature Grid (Compact Overview)',
+            type: 'object',
+            fields: [
+                { name: 'sectionHeadline', title: 'Section Headline (Optional)', type: 'string' },
+                { name: 'sectionSubline', title: 'Section Subline (Optional)', type: 'string' },
+                {
+                    name: 'features',
+                    title: 'Features Grid Items',
+                    type: 'array',
+                    of: [
+                        {
+                            type: 'object',
+                            fields: [
+                                {
+                                    name: 'icon',
+                                    title: 'Icon',
+                                    type: 'string',
+                                    options: {
+                                        list: [
+                                            { title: 'Calendar / Booking', value: 'calendar' },
+                                            { title: 'Message / Chat', value: 'message' },
+                                            { title: 'Chart / Analytics', value: 'chart' },
+                                            { title: 'Shield / Security', value: 'shield' },
+                                            { title: 'Bolt / Fast', value: 'bolt' },
+                                            { title: 'Star / Quality', value: 'star' },
+                                            { title: 'User / Contact', value: 'user' },
+                                            { title: 'Target / Conversion', value: 'target' },
+                                            { title: 'Globe / Website', value: 'globe' },
+                                            { title: 'Check Circle', value: 'check-circle' },
+                                            { title: 'Smartphone / Mobile', value: 'smartphone' },
+                                            { title: 'Clock / Time', value: 'clock' },
+                                            { title: 'Heart / Love', value: 'heart' }
+                                        ]
+                                    },
+                                    validation: (Rule: any) => Rule.required()
+                                },
+                                { 
+                                    name: 'headline', 
+                                    title: 'Headline', 
+                                    type: 'string',
+                                    validation: (Rule: any) => Rule.required().max(60)
+                                },
+                                { 
+                                    name: 'description', 
+                                    title: 'Description', 
+                                    type: 'text',
+                                    rows: 2,
+                                    validation: (Rule: any) => Rule.required().max(160)
+                                }
+                            ],
+                            preview: {
+                                select: { title: 'headline', subtitle: 'description' }
+                            }
+                        }
+                    ]
+                }
+            ],
+            options: { collapsible: true, collapsed: true }
+        },
+        {
             name: 'visualSection',
             title: 'Visual Section (Interactive Designs)',
             type: 'object',
@@ -95,7 +180,7 @@ export default {
                     options: {
                         list: [
                             { title: 'Design 1: Social Media Fan Out', value: 'design-1-social-fan-out' },
-                            { title: 'Design 2: (Coming Soon)', value: 'design-2' },
+                            { title: 'Design 2: Video Gallery Carousel', value: 'design-2-video-gallery' },
                             { title: 'Design 3: (Coming Soon)', value: 'design-3' }
                         ],
                     },
@@ -123,6 +208,89 @@ export default {
                         }
                     ],
                     options: { collapsible: true, collapsed: false }
+                },
+                {
+                    name: 'videoGalleryData',
+                    title: 'Video Gallery Setup',
+                    type: 'object',
+                    hidden: ({ parent }: any) => parent?.designType !== 'design-2-video-gallery',
+                    fields: [
+                        { name: 'headline', title: 'Headline', type: 'string' },
+                        { name: 'subline', title: 'Subheadline', type: 'text', rows: 3 },
+                        {
+                            name: 'videos',
+                            title: 'Portrait Videos (9:16)',
+                            type: 'array',
+                            of: [
+                                {
+                                    type: 'object',
+                                    fields: [
+                                        { name: 'title', title: 'Video Title (Overlay)', type: 'string' },
+                                        { name: 'subtitle', title: 'Video Subtitle / Info', type: 'string' },
+                                        { name: 'videoFile', title: 'MP4 Video File', type: 'file', options: { accept: 'video/mp4' } },
+                                        { name: 'posterImage', title: 'Poster Image', type: 'image', options: { hotspot: true } }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    options: { collapsible: true, collapsed: false }
+                }
+            ],
+            options: { collapsible: true, collapsed: true }
+        },
+        {
+            name: 'comparisonSection',
+            title: 'Pricing/Feature Comparison Section',
+            type: 'object',
+            fields: [
+                { name: 'headline', title: 'Headline', type: 'string', initialValue: 'Warum Adbites die bessere Wahl ist' },
+                { name: 'subline', title: 'Subline', type: 'text', rows: 2 },
+                {
+                    name: 'freelancerCard',
+                    title: 'Left Card: Freelancer',
+                    type: 'object',
+                    fields: [
+                        { name: 'title', title: 'Card Title', type: 'string', initialValue: 'Der Freelancer' },
+                        { name: 'price', title: 'Price/Cost Text', type: 'string', initialValue: 'Stundenlohn / Variabel' },
+                        { 
+                            name: 'features', 
+                            title: 'Downsides (Crosses)', 
+                            type: 'array', 
+                            of: [{ type: 'string' }] 
+                        }
+                    ]
+                },
+                {
+                    name: 'agencyCard',
+                    title: 'Right Card: Classic Agency',
+                    type: 'object',
+                    fields: [
+                        { name: 'title', title: 'Card Title', type: 'string', initialValue: 'Klassische Agentur' },
+                        { name: 'price', title: 'Price/Cost Text', type: 'string', initialValue: 'Hoher Retainer / Monat' },
+                        { 
+                            name: 'features', 
+                            title: 'Downsides (Crosses)', 
+                            type: 'array', 
+                            of: [{ type: 'string' }] 
+                        }
+                    ]
+                },
+                {
+                    name: 'adbitesCard',
+                    title: 'Center Card: Adbites (Highlighted)',
+                    type: 'object',
+                    fields: [
+                        { name: 'title', title: 'Card Title', type: 'string', initialValue: 'Adbites' },
+                        { name: 'price', title: 'Price/Cost Text', type: 'string', initialValue: 'Fester Paketpreis' },
+                        { name: 'badge', title: 'Badge Text', type: 'string', initialValue: 'Am beliebtesten' },
+                        { 
+                            name: 'features', 
+                            title: 'Benefits (Checkmarks)', 
+                            type: 'array', 
+                            of: [{ type: 'string' }] 
+                        }
+                    ]
                 }
             ],
             options: { collapsible: true, collapsed: true }
@@ -230,6 +398,14 @@ export default {
                 { name: 'trustText', title: 'Trust Under Button', type: 'string' },
             ],
             options: { collapsible: true, collapsed: true },
+        },
+        {
+            name: 'llmsDescription',
+            title: 'LLM Description (AI Index)',
+            type: 'text',
+            rows: 4,
+            description: 'Factual, entity-rich 1–2 sentence description for AI crawlers (llms.txt, .md pages). If set, this overrides the SEO meta description in all AI-facing outputs. Write what the product IS, not marketing copy.',
+            options: { collapsible: true, collapsed: false },
         },
         {
             name: 'seo',

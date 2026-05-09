@@ -177,8 +177,8 @@ const faqSchema = {
 
 <Layout title="KI Fotoshootings für Einzelhändler | Adbites">
     <!-- Inject Schema.org markup -->
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+    <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonLd)} />
+    <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
 
     <main>
         <ProductHero {...heroData} />
